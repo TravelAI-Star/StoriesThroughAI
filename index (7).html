@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stories Through AI – AI travel vlogs</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;700&family=Noto+Color+Emoji&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06353d;--bg2:#0a4650;--ink:#f3ebdd;--mute:#a9c4bf;--mint:#8fd9cd;--sun:#ff9a7e;--btn:#ff8160;--line:#1f5e68;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme="dark"]){color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;--bg:#f6f0e4;--bg2:#ebe2d0;--ink:#06353d;--mute:#4c6b6a;--mint:#0b5560;--sun:#b8431f;--btn:#ff8160;--line:#d3c8b2}}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 Manrope,system-ui,sans-serif}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+header.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{display:flex;align-items:center;gap:12px;font:700 20px Unbounded,sans-serif;text-decoration:none;letter-spacing:-.02em}.logo img{width:52px;height:52px;border-radius:50%}
+nav a{margin-left:22px;text-decoration:none;color:var(--mute);font-weight:500}
+nav a:hover{color:var(--ink)}
+.hero{padding:40px 0 70px;position:relative}
+h1{font:700 clamp(38px,7.4vw,84px)/1.02 Unbounded,sans-serif;letter-spacing:-.04em;margin:0 0 22px;max-width:14ch}
+.lead{max-width:46ch;color:var(--mute);font-size:19px;margin:0 0 30px}
+.btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:700;text-decoration:none;background:var(--btn);color:#2a0d05;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:none;border:2px solid var(--line);color:var(--ink);margin-left:10px}
+.route{position:absolute;right:-20px;top:-10px;width:min(62vw,620px);height:auto;opacity:.95;pointer-events:none}
+.route path.trail{stroke-dasharray:6 9;fill:none;stroke:var(--mint);stroke-width:2;opacity:.35}
+.route path.live{fill:none;stroke:var(--mint);stroke-width:3;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 3.2s .3s ease forwards}
+.route circle{fill:var(--btn)}
+.route .plane{fill:var(--ink);offset-path:path("M20 260 C 140 40, 330 20, 420 120 S 540 250, 600 90");animation:fly 3.2s .3s ease forwards;offset-rotate:auto;offset-distance:0%}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fly{to{offset-distance:100%}}
+@media (max-width:760px){.route{position:static;width:100%;margin-top:10px}.hero{padding-bottom:30px}}
+h2{font:700 clamp(26px,4vw,40px)/1.1 Unbounded,sans-serif;letter-spacing:-.03em;margin:0 0 10px}
+section{padding:56px 0}
+.sub{color:var(--mute);margin:0 0 30px;max-width:52ch}
+/* featured player */
+.player{display:block;position:relative;border-radius:22px;overflow:hidden;aspect-ratio:16/9;background:linear-gradient(135deg,#0f5f6b,#1b2f6b 55%,#ff9a5a);text-decoration:none;color:#fff;border:1px solid var(--line)}
+.player::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(255,255,255,.28),transparent 40%),linear-gradient(to top,rgba(0,0,0,.65),transparent 60%)}
+.player .play{position:absolute;left:50%;top:48%;width:92px;height:92px;margin:-46px;border-radius:50%;background:#ff8160;display:grid;place-items:center;transition:transform .25s}
+.player:hover .play{transform:scale(1.1)}
+.play::after{content:"";border-left:26px solid #2a0d05;border-top:16px solid transparent;border-bottom:16px solid transparent;margin-left:7px}
+.player .cap{position:absolute;left:24px;right:24px;bottom:50px}
+.player .cap b{font:700 clamp(20px,3.4vw,34px)/1.15 Unbounded,sans-serif;display:block}
+.bar{position:absolute;left:24px;right:24px;bottom:22px;height:5px;border-radius:5px;background:rgba(255,255,255,.3)}
+.bar i{display:block;height:100%;width:38%;background:#ff8160;border-radius:5px}
+.tag{position:absolute;top:18px;left:18px;background:rgba(0,0,0,.45);padding:5px 12px;border-radius:999px;font-size:14px;font-weight:700;z-index:1}
+/* filters + grid */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.chip{border:2px solid var(--line);background:none;color:var(--ink);padding:8px 18px;border-radius:999px;font:500 15px Manrope,sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--mint);color:var(--bg);border-color:var(--mint)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:22px}
+.pass{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-decoration:none;transition:transform .2s,border-color .2s}
+.pass:hover{transform:translateY(-4px);border-color:var(--mint)}
+.pass .pic{height:150px;position:relative}
+.pass .pic span{position:absolute;right:12px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;font-size:13px;padding:2px 8px;border-radius:6px}
+.pass .body{padding:16px 18px 18px;border-top:2px dashed var(--line);position:relative}
+.pass .body::before,.pass .body::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg)}
+.pass .body::before{left:-10px}.pass .body::after{right:-10px}
+.pass h3{margin:0 0 4px;font:700 18px/1.25 Unbounded,sans-serif;letter-spacing:-.02em}
+.pass p{margin:0;color:var(--mute);font-size:15px}
+.pass .meta{display:flex;justify-content:space-between;margin-top:12px;font-size:14px;color:var(--sun);font-weight:700}
+/* process + cta */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:28px}
+.steps h3{margin:0 0 6px;font:700 18px Unbounded,sans-serif}
+.steps p{margin:0;color:var(--mute)}
+.cta{background:linear-gradient(120deg,#0b5560,#06353d);border:1px solid #1f5e68;border-radius:26px;padding:clamp(30px,6vw,64px);color:#fff;text-align:left}
+.cta p{max-width:44ch;color:#d4e6e4}
+footer{padding:36px 0 50px;color:var(--mute);font-size:15px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+:root[data-theme="light"]{color-scheme:light;--bg:#f6f0e4;--bg2:#ebe2d0;--ink:#06353d;--mute:#4c6b6a;--mint:#0b5560;--sun:#b8431f;--line:#d3c8b2}
+.tg{margin-left:22px;background:none;border:2px solid var(--line);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;font:500 14px Manrope,sans-serif}
+.glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,70%) var(--my,30%),rgba(255,129,96,.2),transparent 60%)}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+.mq{overflow:hidden;border-block:1px solid var(--line);padding:14px 0;white-space:nowrap}
+.mq div{display:inline-flex;animation:mq 32s linear infinite;font:700 18px Unbounded,sans-serif;color:var(--mute)}
+.mq span{padding:0 20px}.mq span::after{content:"✦";margin-left:40px;color:var(--btn)}
+@keyframes mq{to{transform:translateX(-50%)}}
+.stats{display:flex;gap:44px;flex-wrap:wrap;padding:46px 0 0}
+.stats b{display:block;font:700 clamp(36px,6vw,58px)/1 Unbounded,sans-serif;color:var(--sun)}
+.stats span{color:var(--mute)}
+.steps2{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-bottom:26px}
+.st2{flex:0 0 190px;border:1px solid var(--line);background:var(--bg2);border-radius:16px;padding:14px 16px;text-decoration:none;transition:border-color .2s}.st2:hover{border-color:var(--mint)}
+.st2 .n{color:var(--sun);font:700 13px Unbounded,sans-serif}.st2 b{display:block;font:700 15px Unbounded,sans-serif;margin:4px 0}.st2 small{color:var(--mute);font-size:14px}
+.trk{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}@media (max-width:860px){.trk{grid-template-columns:1fr}}
+.tmap{background:linear-gradient(135deg,#0d4670,#06353d);border-radius:20px;border:1px solid var(--line);padding:12px;color:#fff}
+.tmap svg{width:100%;height:auto;display:block}.tnote{padding:6px 8px 4px;min-height:76px}.tnote b{font:700 17px Unbounded,sans-serif}.tnote p{margin:4px 0 6px;color:#cfe3e0;font-size:15px}.tnote a{color:#ffb39e;font-weight:700;margin-right:14px;font-size:15px}
+#tmk{transition:transform .7s ease}
+.tvid{aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:var(--bg2)}.tvid iframe{width:100%;height:100%;border:0}
+.chs{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.chs button{width:100%;text-align:left;background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font:500 15px Manrope,sans-serif;cursor:pointer}
+.chs button span{color:var(--sun);font-weight:700;margin-right:10px}.chs button[aria-current="true"]{border-color:var(--btn);background:var(--bg)}
+.pl{display:grid;grid-template-columns:minmax(240px,320px) 1fr;gap:26px;align-items:start}@media (max-width:860px){.pl{grid-template-columns:1fr}}
+.plf{display:grid;gap:14px;background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:20px}
+.plf label{display:grid;gap:6px;font-weight:700;font-size:14px}
+.plf input,.plf select{font:500 16px Manrope,sans-serif;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.plf .btn{border:0;cursor:pointer;font:700 16px Manrope,sans-serif}
+.plr h3{font:700 20px Unbounded,sans-serif;margin:0 0 8px}.plr h4{margin:18px 0 6px;color:var(--sun);font:700 14px Unbounded,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.plr label{display:flex;gap:10px;align-items:flex-start;padding:4px 0}.plr input{margin-top:6px;accent-color:#ff8160;width:18px;height:18px}
+.prog{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:6px 0 10px}.prog i{display:block;height:100%;width:0;background:var(--btn);transition:width .3s}
+.plr .acts{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}.plr .acts button{font:700 15px Manrope,sans-serif;padding:10px 20px;border-radius:999px;border:2px solid var(--line);background:none;color:var(--ink);cursor:pointer}
+.gal{columns:3 220px;column-gap:14px}
+.gi2{display:block;width:100%;margin:0 0 14px;padding:0;border:0;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;break-inside:avoid;color:#fff;text-align:left}
+.gi2 img{width:100%;height:100%;object-fit:cover;display:block}.gi2 span{position:absolute;left:12px;bottom:10px;font-weight:700;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:grid;place-items:center;z-index:50;padding:20px}.lb[hidden]{display:none}
+.lb .box{width:min(92vw,760px);aspect-ratio:4/3;border-radius:16px;overflow:hidden;position:relative;color:#fff}.lb .box img{width:100%;height:100%;object-fit:contain;background:#000}
+.lb .box b{position:absolute;left:18px;bottom:14px;font:700 22px Unbounded,sans-serif;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.lbx{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#000;font-size:20px;cursor:pointer}
+@media print{header.top,footer,main>.hero,main>section:not(#planner),.plf,.acts{display:none!important}body{background:#fff;color:#000}.rv{opacity:1;transform:none}.plr h4{color:#000}}
+.pass{will-change:transform}
+.globe{max-width:560px;margin:0 auto}.globe canvas{width:100%;aspect-ratio:1;display:block;cursor:grab;touch-action:pan-y}.globe canvas:active{cursor:grabbing}
+.gi{text-align:center;font:700 clamp(18px,3vw,24px) Unbounded,sans-serif;margin-top:8px;min-height:36px}
+.fl{font-family:"Noto Color Emoji","Segoe UI Emoji",sans-serif}
+.dchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px}.dchips .chip{padding:6px 14px;font-size:14px}
+.mq i{font-style:normal;font-family:"Noto Color Emoji","Segoe UI Emoji",sans-serif;margin-right:10px}
+.nd{font:700 13px Unbounded,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--sun);margin:48px 0 12px}
+#pickres{max-width:380px;margin-top:26px}
+
+/* globe + country card */
+.gw{display:block}
+.gw.has{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.gw.has{grid-template-columns:1fr}}
+.gw .globe{margin:0 auto;width:100%}
+.gw.has .globe{margin:0}
+.gd[hidden]{display:none}
+.gd{background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:22px;min-height:380px}
+.gd .hint{color:var(--mute);margin:0;padding:50px 10px;text-align:center}
+.gd h3{margin:0;font:700 clamp(22px,3.4vw,30px)/1.15 Unbounded,sans-serif;letter-spacing:-.02em}
+.gd h3 .fl{font-size:1.2em;margin-right:8px}
+.gd .cap2{color:var(--mute);font-size:15px;margin:4px 0 16px}
+.kp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.kp div{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:11px 14px}
+.kp small{display:block;color:var(--mute);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.kp b{display:block;font:700 17px/1.25 Unbounded,sans-serif;color:var(--sun);margin-top:3px}
+.kp span{font-size:13px;color:var(--mute)}
+.gd dl{margin:0 0 14px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:15px}
+.gd dt{color:var(--mute);font-weight:700}.gd dd{margin:0}
+.gd h4{margin:0 0 6px;color:var(--sun);font:700 13px Unbounded,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.gd ul{margin:0 0 14px;padding-left:20px}.gd li{margin:2px 0}
+.gd .nt{font-size:13px;color:var(--mute);margin:0}
+.gd .btn{padding:10px 20px;font-size:15px;margin:6px 0 12px}
+/* vote */
+.poll{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;max-width:900px}
+.vo{position:relative;overflow:hidden;text-align:left;background:var(--bg2);color:var(--ink);border:2px solid var(--line);border-radius:18px;padding:16px 18px;cursor:pointer;font:500 15px/1.4 Manrope,sans-serif;transition:border-color .2s,transform .2s}
+.vo:hover{transform:translateY(-3px);border-color:var(--mint)}
+.vo[aria-pressed="true"]{border-color:var(--btn)}
+.vo .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--btn);opacity:.2;transition:width .6s ease}
+.vo>*{position:relative}
+.vo .em{font-size:30px;display:block}
+.vo b{display:block;font:700 18px Unbounded,sans-serif;margin:4px 0 2px}
+.vo small{color:var(--mute);font-size:14px;display:block;min-height:40px}
+.vo .ct{display:flex;justify-content:space-between;margin-top:10px;font-weight:700;color:var(--sun);font-size:14px}
+#vnote{color:var(--mute);font-size:14px;margin:16px 0 0}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.mq div{animation:none}.ann a,.vo .fill{transition:none}}
+@media (prefers-reduced-motion:reduce){.route path.live{animation:none;stroke-dashoffset:0}.route .plane{animation:none;offset-distance:100%}html{scroll-behavior:auto}}
+/* ===== digital passport ===== */
+.ppm{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:60;display:grid;place-items:center;padding:20px}.ppm[hidden]{display:none}
+.ppbox{position:relative;width:min(94vw,720px);max-height:92vh;overflow-y:auto;background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:22px;padding:28px 24px 24px}
+.pph{font:700 clamp(18px,3vw,24px)/1.2 Unbounded,sans-serif;margin:0 44px 14px 0}
+.ppn{color:var(--mute);margin:12px 0 0;font-size:15px}
+.ppbox .tvid{margin-top:4px}
+.demo{height:100%;display:grid;place-items:center;text-align:center;padding:22px;gap:12px;align-content:center;color:var(--mute)}
+.ppbox .btn,.demo button{border:0;cursor:pointer;font:700 16px Manrope,sans-serif}
+.ppbox .btn.ghost{border:2px solid var(--line);margin-left:0}
+.cg{text-align:center;padding:10px 0 4px}.cg .big{font-size:60px;line-height:1.1}
+.cg h3{font:700 clamp(20px,3.6vw,28px)/1.2 Unbounded,sans-serif;margin:10px 0 22px}
+.ppf{display:grid;gap:14px;margin-top:10px}
+.ppf label{display:grid;gap:6px;font-weight:700;font-size:14px}
+.ppf input,.ppf select,.ppf textarea{font:500 16px Manrope,sans-serif;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.ppf textarea{min-height:84px;resize:vertical}
+.ppf .err{color:var(--sun);font-weight:700;margin:0;min-height:1em}
+.stampwrap{display:grid;place-items:center;padding:18px 0 8px}
+.stamp{width:210px;height:210px;border-radius:50%;border:6px double #b8321f;color:#b8321f;background:#f3ebdd;display:grid;place-content:center;text-align:center;transform:rotate(-12deg);animation:stampin .7s cubic-bezier(.2,1.5,.4,1) both}
+.stamp .fl{font-size:56px;display:block;line-height:1.1}
+.stamp b{font:700 17px Unbounded,sans-serif;letter-spacing:.1em;display:block}
+.stamp small{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;margin-top:2px}
+@keyframes stampin{from{transform:rotate(-12deg) scale(2.8);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:1}}
+.pcard{max-width:780px;border-radius:22px;overflow:hidden;border:1px solid #c9a45c;background:linear-gradient(160deg,#0c2b4d,#071a30);color:#f3ebdd;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.pcov{padding:26px 26px 18px;text-align:center;border-bottom:2px solid #c9a45c}
+.pcov small{letter-spacing:.3em;color:#d9b46a;font:700 12px Unbounded,sans-serif}
+.pcov h3{margin:8px 0 0;font:700 clamp(18px,3.4vw,26px)/1.2 Unbounded,sans-serif;color:#e8c987;letter-spacing:.04em}
+.pfields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;padding:20px 26px}
+.pfields small{display:block;color:#d9b46a;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.pfields b{font:700 16px/1.3 Unbounded,sans-serif;word-break:break-word}
+.ptab{padding:0 26px 26px}
+.ptab h4{margin:6px 0 4px;color:#d9b46a;font:700 12px Unbounded,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.prow{display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border:1px solid rgba(201,164,92,.35);border-radius:12px;margin-top:8px;background:none;color:inherit;font:500 16px Manrope,sans-serif;text-align:left;cursor:pointer}
+.prow.on{background:rgba(201,164,92,.14)}.prow.off{opacity:.7}
+.prow .st{font-weight:700;color:#8fd9cd;white-space:nowrap}.prow.off .st{color:#a9c4bf}
+.pempty{background:var(--bg2);border:2px dashed var(--line);border-radius:22px;padding:34px 24px;max-width:780px;text-align:center}
+.pempty p{color:var(--mute);margin:0 0 18px}
+.pacts{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+@media (prefers-reduced-motion:reduce){.stamp{animation:none}}
+/* ===== categories + Sri Lanka map ===== */
+.cats{display:flex;gap:12px;flex-wrap:wrap;padding:6px 0 4px}
+.cat{flex:1 1 230px;display:flex;align-items:center;gap:14px;text-align:left;border:2px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:18px;padding:14px 18px;cursor:pointer;font:700 17px Unbounded,sans-serif;transition:border-color .2s,transform .2s}
+.cat:hover{transform:translateY(-2px);border-color:var(--mint)}
+.cat small{display:block;font:500 14px Manrope,sans-serif;color:var(--mute);margin-top:2px}
+.cat .fl{font-size:32px}
+.cat[aria-pressed="true"]{border-color:var(--btn);background:var(--bg)}
+main[data-cat="world"] .lk{display:none}
+main[data-cat="lk"] .wd{display:none}
+.lkw{display:grid;grid-template-columns:minmax(0,430px) 1fr;gap:26px;align-items:start}
+@media (max-width:860px){.lkw{grid-template-columns:1fr}}
+.lkmap svg{width:100%;height:auto;display:block}
+.lkp:focus-visible{outline:none}.lkp:focus-visible circle.pin{stroke:#ffd27a;stroke-width:4}
+.lkst{display:inline-block;margin:0 0 12px;padding:4px 12px;border-radius:999px;font-weight:700;font-size:14px;border:2px solid var(--line)}
+.lkst.on{border-color:#c9a45c;color:#e8c987}
+.pchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pchip{border:1px solid rgba(201,164,92,.4);background:none;color:#f3ebdd;border-radius:999px;padding:6px 14px;font:500 14px Manrope,sans-serif;cursor:pointer}
+.pchip.on{background:rgba(201,164,92,.18);color:#e8c987;font-weight:700}.pchip.off{opacity:.7}
+/* ===== offroad garage builder ===== */
+.gbuild{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:26px;align-items:start}
+@media (max-width:900px){.gbuild{grid-template-columns:1fr}}
+.gview{position:sticky;top:84px;border-radius:22px;overflow:hidden;border:1px solid var(--line);background:#14303a}
+@media (max-width:900px){.gview{position:static}}
+.gview svg{display:block;width:100%;height:auto}
+.gpanel h3{font:700 16px/1.3 Unbounded,sans-serif;margin:24px 0 10px}.gpanel h3:first-child{margin-top:0}
+.gcars{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.gcar{border:2px solid var(--line);background:var(--bg2);color:var(--ink);border-radius:14px;padding:10px 12px;text-align:left;cursor:pointer;font:700 15px Manrope,sans-serif}
+.gcar small{display:block;color:var(--mute);font-weight:500;font-size:13px;margin-top:2px}
+.gcar[aria-pressed="true"]{border-color:var(--btn);background:var(--bg)}
+.gabout{color:var(--mute);margin:10px 0 0}
+.gcols{display:flex;flex-wrap:wrap;gap:12px}
+.gcol{width:44px;height:44px;border-radius:50%;border:3px solid var(--line);cursor:pointer;padding:0}
+.gcol[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--btn)}
+.gmods{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.gmod{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--bg2)}
+.gmod:has(input:checked){border-color:var(--mint)}
+.gmod input{margin-top:3px;width:18px;height:18px;accent-color:var(--btn);flex:none}
+.gmod b{font-size:15px}.gmod small{display:block;color:var(--mute);font-size:13px}
+#gname{width:100%;font:500 16px Manrope,sans-serif;padding:10px 12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.gsum{margin-top:20px;background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.gsum h4{font:700 18px/1.3 Unbounded,sans-serif;margin:0 0 4px}.gsum p{margin:0 0 10px;color:var(--mute)}
+.gpills{display:flex;flex-wrap:wrap;gap:6px}.gpills span{background:var(--mint);color:var(--bg);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
+.gpanel button.btn{border:0;cursor:pointer;font:700 16px Manrope,sans-serif}
+.gpanel .btn.ghost{border:2px solid var(--line);margin-left:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="logo" href="#top"><img src="data:image/webp;base64,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" alt="" width="52" height="52">Stories Through AI</a>
+<nav><a href="#cats">Explore</a><a href="#passport">Passport</a><a href="#journey">Journey</a><a href="#garage">Garage</a><a href="#planner">Planner</a><a href="#gallery">Gallery</a><button class="tg" id="tg" aria-label="Switch light or dark theme">◐ Theme</button></nav></header>
+
+<main id="top" data-cat="world">
+<div class="hero">
+<svg class="route" viewBox="0 0 640 300" aria-hidden="true">
+<path class="trail" d="M20 260 C 140 40, 330 20, 420 120 S 540 250, 600 90"/>
+<path class="live" d="M20 260 C 140 40, 330 20, 420 120 S 540 250, 600 90"/>
+<circle cx="20" cy="260" r="7"/><circle cx="420" cy="120" r="7"/><circle cx="600" cy="90" r="7"/>
+<path class="plane" d="M0-9 L18 0 L0 9 L4 0Z"/>
+</svg>
+<h1>Ayubowan! Travel the world with AI.</h1>
+<p class="lead">New AI-made travel vlogs every week: places you can almost smell, from night markets to mountain passes. Watch here or on YouTube.</p>
+<a class="btn" href="https://www.youtube.com/@CeylonAI-e6l" target="_blank" rel="noopener">Subscribe on YouTube</a><a class="btn ghost" href="#cats">Browse trips</a>
+</div>
+
+<div class="cats" id="cats" role="group" aria-label="Choose a category">
+<button type="button" class="cat" data-c="world" aria-pressed="true"><span class="fl">🌍</span><span>Around the World<small>Trips to countries across the globe</small></span></button>
+<button type="button" class="cat" data-c="lk" aria-pressed="false"><span class="fl">🇱🇰</span><span>Sri Lanka<small>Explore the island place by place</small></span></button>
+</div>
+
+<section id="next" class="wd">
+<h2>Next destinations</h2>
+<p class="sub">30 countries we’re heading to next. Drag the globe, tap a flag, and see the trip details beside it.</p>
+<div class="gw" id="gw"><div class="globe"><canvas id="gl" role="img" aria-label="Interactive globe showing upcoming destinations"></canvas><div id="gi" class="gi" aria-live="polite">Drag to spin the Earth</div><button class="chip" id="ar" aria-pressed="true" style="display:block;margin:12px auto 0">Auto-rotate: on</button></div>
+<div class="gd" id="gd" aria-live="polite" hidden></div></div>
+<div class="dchips" id="dc"></div>
+</section>
+<section id="latest" class="wd">
+<h2>Latest vlog</h2>
+<p class="sub">Our newest trip. Tap to watch it here and earn your passport stamp.</p>
+<a class="player" id="featured" href="#" target="_blank" rel="noopener"><span class="tag">New</span><span class="play" aria-hidden="true"></span><span class="cap"><b id="ft"></b></span><span class="bar"><i></i></span><span class="sr" hidden></span></a>
+</section>
+
+<section id="videos" class="wd">
+<h2>All trips</h2>
+<p class="sub">Pick a region, then pick a flight.</p>
+<div class="chips" id="chips" role="group" aria-label="Filter by region"></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<section id="lanka" class="lk">
+<h2>Explore Sri Lanka</h2>
+<p class="sub">Tap a pin on the map, watch the trip and collect a passport stamp for every place.</p>
+<div class="lkw">
+<div class="tmap lkmap"><svg id="lksvg" viewBox="0 0 420 660" role="img" aria-label="Map of Sri Lanka with trip pins"></svg></div>
+<div><div class="prog" aria-hidden="true"><i id="lkbar"></i></div><div id="lkcnt" class="sub" style="margin:6px 0 14px"></div><div class="gd" id="lkd" aria-live="polite"></div></div>
+</div>
+</section>
+<section id="lkvideos" class="lk">
+<h2>Sri Lanka trips</h2>
+<p class="sub">Pick the kind of place you want to see.</p>
+<div class="chips" id="lkchips" role="group" aria-label="Filter Sri Lanka trips"></div>
+<div class="grid" id="lkgrid"></div>
+</section>
+
+<section id="passport">
+<h2>Your Global Explorer Passport</h2>
+<p class="sub">Watch a full trip, unlock your digital passport and collect a stamp for every country you finish.</p>
+<div id="pcard"></div>
+</section>
+
+<section id="pick" class="wd">
+<h2>Pick my next trip</h2>
+<p class="sub">Vote for the kind of trip you want to see next.</p>
+<div class="poll" id="moods" role="group" aria-label="Vote for the next trip theme"></div>
+<p id="vnote"></p>
+</section>
+<section id="journey">
+<h2>Trip journey</h2>
+<p class="sub">Follow one trip from the first plan to the last mile. Press play and watch the route move with the video.</p>
+<div class="steps2" id="jsteps"></div>
+<div class="trk">
+<div class="tmap"><svg id="tsvg" viewBox="0 0 400 300" role="img" aria-label="Trip route map"></svg><div class="tnote" id="tnote" aria-live="polite"></div></div>
+<div><div class="tvid" id="tvid"></div><ol class="chs" id="chs"></ol></div>
+</div>
+</section>
+
+<section id="garage">
+<h2>Our offroad garage</h2>
+<p class="sub">Pick a 4x4, choose a colour and add your mods to build your own offroad rig.</p>
+<div class="gbuild">
+<div class="gview" id="gview"></div>
+<div class="gpanel">
+<h3>1 · Choose your vehicle</h3>
+<div class="gcars" id="gcars" role="group" aria-label="Vehicle"></div>
+<p class="gabout" id="gabout"></p>
+<h3>2 · Pick a colour</h3>
+<div class="gcols" id="gcols" role="group" aria-label="Colour"></div>
+<h3>3 · Add your mods</h3>
+<div class="gmods" id="gmods"></div>
+<h3>4 · Name your build</h3>
+<input id="gname" maxlength="30" placeholder="e.g. Jungle Beast" aria-label="Name your build" autocomplete="off">
+<div class="gsum" id="gsum" aria-live="polite"></div>
+<div class="pacts"><button type="button" class="btn" id="gcopy">Copy my build</button><a class="btn ghost" id="gwa" target="_blank" rel="noopener" href="#">Share on WhatsApp</a><button type="button" class="btn ghost" id="greset">Reset</button></div>
+</div>
+</div>
+</section>
+
+<section id="planner">
+<h2>Trip planner</h2>
+<p class="sub">Tell us about your trip, and we’ll build a checklist for groceries, vehicle checks and gear.</p>
+<div class="pl">
+<div class="plf">
+<label>Destination<input id="pd" type="text" placeholder="e.g. Ella" maxlength="40"></label>
+<label>Days<input id="pdays" type="number" min="1" max="30" value="3"></label>
+<label>People<input id="ppl" type="number" min="1" max="20" value="4"></label>
+<label>Vehicle<select id="pv"><option>4x4 offroad</option><option>Jeep or SUV</option><option>Van</option></select></label>
+<button class="btn" id="pgo" type="button">Make my checklist</button>
+</div>
+<div class="plr" id="plr" aria-live="polite"><p class="sub">Your checklist will appear here.</p></div>
+</div>
+</section>
+
+<section id="gallery">
+<h2>Gallery</h2>
+<p class="sub">Photos from the places we’ve travelled, and from you.</p>
+<div class="gal" id="gal"></div>
+<p><a class="btn" id="gshare" href="#" target="_blank" rel="noopener">Send us your trip photos</a></p>
+</section>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo"><button class="lbx" id="lbx" aria-label="Close photo">✕</button><div class="box" id="lbc"></div></div>
+
+<section id="how">
+<h2>How a vlog is made</h2>
+<p class="sub">Real places, AI-powered storytelling.</p>
+<div class="steps">
+<div><h3>Pick a place</h3><p>We choose a destination and research what makes it worth a visit.</p></div>
+<div><h3>Build the scenes</h3><p>AI tools turn the script into visuals, voice and music.</p></div>
+<div><h3>Post and share</h3><p>Every vlog goes up on YouTube and lands on this page.</p></div>
+</div>
+</section>
+
+<section>
+<div class="cta">
+<h2>Don’t miss the next flight.</h2>
+<p>Subscribe to Stories Through AI on YouTube and turn on notifications to get every new trip.</p>
+<a class="btn" href="https://www.youtube.com/@CeylonAI-e6l" target="_blank" rel="noopener">Subscribe</a>
+</div>
+</section>
+</main>
+<footer><span style="display:flex;align-items:center;gap:10px"><img src="data:image/webp;base64,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" alt="" width="32" height="32" style="border-radius:50%">© 2026 Stories Through AI</span><span>AI-generated travel vlogs</span></footer>
+</div>
+
+<script>
+// EDIT HERE: put your real YouTube video IDs and titles.
+var CHANNEL="https://www.youtube.com/@CeylonAI-e6l";
+var VIDEOS=[
+{id:"VIDEO_ID_1",title:"Kyoto after midnight",place:"Japan",region:"Asia",len:"12:40",note:"Lantern alleys and 3 a.m. ramen.",a:"#1b2f6b",b:"#ff7a8a"},
+{id:"VIDEO_ID_2",title:"Santorini in one sunset",place:"Greece",region:"Europe",len:"9:15",note:"White walls, blue domes, golden hour.",a:"#0f5f9b",b:"#ffd27a"},
+{id:"VIDEO_ID_3",title:"Marrakech market maze",place:"Morocco",region:"Africa",len:"14:02",note:"Spices, rooftops and mint tea.",a:"#8a2f1b",b:"#ffb347"},
+{id:"VIDEO_ID_4",title:"Patagonia road trip",place:"Chile",region:"Americas",len:"16:30",note:"Wind, glaciers and endless gravel.",a:"#0b4f5a",b:"#9be8d8"},
+{id:"VIDEO_ID_6",title:"Iceland northern lights",place:"Iceland",region:"Europe",len:"13:48",note:"Chasing green skies across black sand.",a:"#14284f",b:"#6cf0b4"}
+];
+function url(v){return v.id.indexOf("VIDEO_ID")===0?CHANNEL:"https://www.youtube.com/watch?v="+v.id}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var f=document.getElementById("featured");
+f.href=url(VIDEOS[0]);document.getElementById("ft").textContent=VIDEOS[0].title+" · "+VIDEOS[0].place;
+f.style.background="linear-gradient(135deg,"+VIDEOS[0].a+","+VIDEOS[0].b+")";
+f.setAttribute("aria-label","Watch "+VIDEOS[0].title+" on YouTube");
+var regions=["All"].concat(VIDEOS.map(function(v){return v.region}).filter(function(r,i,a){return a.indexOf(r)===i}));
+var chips=document.getElementById("chips"),grid=document.getElementById("grid"),cur="All";
+function render(){
+chips.innerHTML=regions.map(function(r){return '<button class="chip" aria-pressed="'+(r===cur)+'" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("");
+grid.innerHTML=VIDEOS.filter(function(v){return cur==="All"||v.region===cur}).map(function(v){
+return '<a class="pass" href="'+url(v)+'" target="_blank" rel="noopener"><div class="pic" style="background:linear-gradient(135deg,'+v.a+','+v.b+')"><span>'+esc(v.len)+'</span></div><div class="body"><h3>'+esc(v.title)+'</h3><p>'+esc(v.note)+'</p><div class="meta"><span>'+esc(v.place)+'</span><span>▶ Watch &amp; get stamp</span></div></div></a>'}).join("");
+}
+chips.addEventListener("click",function(e){var r=e.target.getAttribute("data-r");if(r){cur=r;render()}});
+/* extras */
+// mood of each video (edit when you add real videos)
+VIDEOS.forEach(function(v,i){v.mood=["Culture","Romance","Food","Adventure","Nature"][i]||"Adventure"});
+var secs=document.querySelectorAll("main section");secs.forEach(function(s){s.classList.add("rv")});
+var io=window.IntersectionObserver?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.15}):null;
+[].slice.call(secs).forEach(function(s){if(io)io.observe(s);else s.classList.add("in")});
+var hero=document.querySelector(".hero"),gl=document.createElement("div");gl.className="glow";hero.appendChild(gl);
+hero.addEventListener("mousemove",function(e){var r=hero.getBoundingClientRect();hero.style.setProperty("--mx",(e.clientX-r.left)+"px");hero.style.setProperty("--my",(e.clientY-r.top)+"px")});
+grid.addEventListener("mousemove",function(e){var c=e.target.closest(".pass");if(!c)return;var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform="perspective(700px) rotateY("+x*10+"deg) rotateX("+(-y*10)+"deg) translateY(-4px)"});
+grid.addEventListener("mouseout",function(e){var c=e.target.closest(".pass");if(c&&!c.contains(e.relatedTarget))c.style.transform=""});
+
+/* ===== VOTE: edit TOPICS to change the options (name must match a "mood" used in VIDEOS above) ===== */
+var TOPICS=[
+{k:"Culture",e:"\uD83C\uDFEF",d:"Temples, markets, festivals and local life"},
+{k:"Adventure",e:"\uD83E\uDDD7",d:"Offroad, hikes, mountains and adrenaline"},
+{k:"Food",e:"\uD83C\uDF5C",d:"Street food, night markets and local kitchens"},
+{k:"Nature",e:"\uD83C\uDF3F",d:"Forests, wildlife, lakes and quiet places"},
+{k:"Romance",e:"\uD83C\uDF05",d:"Sunsets, islands and slow, pretty trips"}
+];
+var mc=document.getElementById("moods"),vcnt={},vmine="";
+try{vcnt=JSON.parse(localStorage.getItem("sta_votes")||"{}")||{};vmine=localStorage.getItem("sta_myvote")||""}catch(e){}
+function saveV(){try{localStorage.setItem("sta_votes",JSON.stringify(vcnt));localStorage.setItem("sta_myvote",vmine)}catch(e){}}
+function renderV(){
+var tot=0;TOPICS.forEach(function(t){tot+=vcnt[t.k]||0});
+mc.innerHTML=TOPICS.map(function(t){var n=vcnt[t.k]||0,p=tot?Math.round(n/tot*100):0;
+return '<button type="button" class="vo" aria-pressed="'+(vmine===t.k)+'" data-m="'+esc(t.k)+'"><span class="fill" style="width:'+p+'%"></span><span class="em fl">'+t.e+'</span><b>'+esc(t.k)+'</b><small>'+esc(t.d)+'</small><span class="ct"><span>'+(vmine===t.k?"Your vote":"Vote")+'</span><span>'+n+' vote'+(n===1?"":"s")+' · '+p+'%</span></span></button>'}).join("");
+document.getElementById("vnote").textContent=vmine?"Thanks for voting! Tap another option to change your vote. Total votes: "+tot+".":"Tap an option to vote. Total votes: "+tot+".";
+}
+mc.addEventListener("click",function(e){var bt=e.target.closest(".vo");if(!bt)return;var m=bt.getAttribute("data-m");
+if(vmine!==m){if(vmine&&vcnt[vmine]>0)vcnt[vmine]--;vcnt[m]=(vcnt[m]||0)+1;vmine=m;saveV()}
+renderV();
+});
+renderV();
+
+
+
+var P=[
+[-168,66,-162,70,-156,71.5,-141,70,-128,70,-115,68,-95,72,-85,70,-82,66,-90,64,-94,59,-90,57,-82,55,-79,52,-78,58,-72,61,-65,60,-62,57,-56,52,-60,47,-66,45,-70,43,-70,41.5,-74,40,-76,37,-76,35,-81,31,-80,26,-81,25.2,-83,29,-85,30,-89,30,-94,29.5,-97,27,-97.5,22,-95,18.5,-91,18.5,-90.5,21,-87,21.5,-88,16,-84,15.5,-83,11,-80,9,-77.5,8.5,-79.5,7.5,-83,8,-86,11,-87.5,13,-91,14,-95,16,-99,17,-105,20,-106,23,-109,25.5,-112.5,29,-114.7,31.5,-115,29.5,-117,32.5,-120.5,34.5,-122.5,37.5,-124,40.5,-124,46,-123,48.5,-127,51,-131,54.5,-135,58,-140,59.8,-148,60,-152,59,-158,56.5,-164,54.7,-158,58.5,-162,60,-166,62,-164,64.5,-168,65.5],
+[-73,78,-60,82,-30,83.5,-18,80,-20,72,-24,69,-35,65.5,-43,60,-49,61,-53,67,-55,71,-68,76],
+[-80,63,-72,65,-62,67,-67,70,-78,73,-88,72,-86,66],[-90,77,-75,79,-62,82,-80,83,-95,80],
+[-77.5,8.5,-72,12,-68,10.7,-62,10.6,-60,8.5,-57,6,-52,5,-50,1,-50,-1,-44,-2.5,-39,-3.5,-35,-5.5,-35,-9,-38.5,-13,-39,-17.5,-41,-22,-44,-23.2,-48.5,-26,-48.7,-28.5,-52,-32,-54,-34.5,-57,-35,-57.5,-38,-62,-39,-65,-41,-63.5,-42.5,-65.5,-45,-67.5,-47,-66,-48,-69,-51.5,-68.5,-53,-66,-55,-71,-54.5,-74,-52,-75.5,-47,-74,-43,-73.5,-37,-71.5,-31,-71.5,-25,-70,-18,-76,-14,-79,-8,-81,-5,-80,-2,-80,1,-78.5,2,-77.5,4],
+[-9,37,-9,39,-9.5,43,-2,43.5,-1.2,46,-4.5,48.2,-1.5,49.7,2,51,4,52,8,54,8.5,57,10.5,57.5,10,55,12,54.2,14,54,19,54.5,21,57,24,57.5,24,59.4,30,60,23,60.5,21.5,61,25,65,21.5,64,17,61,18.5,59.5,16.5,57,13,55.5,11,59,8,58,5,59.5,5,62,10,64,14,67,18,69.5,25,71,31,70,40,67,33,66.5,36,64.5,41,66,44,68,54,68.5,60,69,68,69,66,72,72,72.5,80,73,87,75,100,77.5,113,74,128,72,140,72.5,150,71.5,160,70,170,70,180,69,180,65,178,64.5,170,60,163,59,162,56,156,51,156,57,160,61,155,59.5,143,59,136,55,141,53,140,48,135,43.5,131,43,129.5,41,128,39,129,36,126.5,34.5,126,37.5,125,39.5,121.5,40.5,122,37,119,37,121,32,122,30,120,26,116.5,22.5,110,21,108.5,21.5,106,19,108.5,15,109.5,11.5,105,8.6,105,10.4,100.5,13.5,99.5,10,100.5,7,103.5,4,104,1.4,101,3,98.5,8,98.5,12,97.5,16.5,94.5,16,94,19,91.5,22.5,87,21.5,86.5,19.5,80.3,15.5,80,10,78,8.3,76.3,9.8,74.5,14.5,72.8,19.5,70,21,72,21,69,22.5,67,24.8,62,25.2,57,25.8,56.5,27,54,26.5,50.5,29.5,48,30,50,26.5,51.5,24.5,54.5,24.2,56.5,26.2,58.5,23.5,59.5,22.5,57.5,19,52,16,45,12.8,43,13,42.5,15.5,39,21.5,35,28,34.5,29.5,32.5,30,34.5,31.5,35.5,34,36,36.5,32,36.2,28,36.8,26.5,38.5,26.5,40,29,41,31.5,41.2,36,41.7,41.5,41.5,41.5,43,37.5,45,38,47,35,45.5,33.5,44.5,30,46,28.5,44,28,42,26.5,41.5,24,40.7,23,40,24,38,22.5,36.5,21.5,38,19.5,40,19.5,42,16,43.5,13.5,45.5,12.5,44.5,18,40,16,38,15.7,40,12,42,10,44,8.5,44.3,6,43,3,43.2,3,42,0,39.5,-0.5,38,-2,36.7,-5.5,36],
+[-5.5,36,-2,35.2,10,37,11,33.5,15,32.3,20,32.5,20,30.5,25,31.8,32,31,34,29.5,33,27,35.5,23.5,37,19,39,15.5,43,12.5,51,11.8,51,10.5,48,5,41,-2,40,-5,39,-8,40.5,-14,35,-18,35.5,-24,32.5,-26,32.5,-29,30,-31.5,27,-33.5,20,-34.8,18,-32,14.5,-26,12,-18,13.5,-12,12,-6,9,-1,9.5,3.5,6,4.3,2,6.3,-3,5,-7.5,4.3,-13,8,-16.5,12.5,-17.5,14.7,-16.5,19.5,-13,27.5,-10,29.5,-9.5,32,-6.5,34],
+[44,-25,47,-25,50,-15.5,49,-12,44,-16.5],
+[114,-22,114.5,-26,115,-34,118,-35,123.5,-34,129,-31.5,135,-34.5,138,-35,140,-38,146,-39,150,-37.5,153,-31,153,-25,149,-20,146,-18.5,145.5,-14.5,143,-11,142,-15,141,-17,136,-15.5,137,-12,133,-11.5,130,-12.5,127,-14,125,-15,122,-17.5,119,-20],
+[144.5,-41,148.3,-41,147,-43.5],[172.8,-34.5,178.5,-37.7,175,-41.5,174.5,-39.5],[172.7,-40.6,174,-41.7,171,-45,167,-46.2,168,-44],
+[-5,50,1.5,51,1.5,53,-2,56,-3,58.6,-6,58,-5,54.5,-3,53.5,-4.5,51.7],[-10,51.7,-6,52,-6,55,-8.5,54.5],[-24,64,-22,66,-15,66.3,-13.5,65,-18,63.4],
+[130.5,31,132,34,135,34,140,35,141.5,38,141.5,41,140,40,138,37,136,36.5,133,35.5,130.5,34],[140,42,141.5,45.5,145,43.5,143,42],
+[79.8,6.5,80.5,5.9,81.8,7.5,80.2,9.8,79.8,8],[95,5.5,98,4,104,-1,106,-5.8,102,-4,97.5,1],[109,1.5,111,1.5,117,7,119,5,117.5,1,116,-3.5,110,-3],
+[105.5,-6.8,114.5,-7.8,114.5,-8.7,106,-7.5],[119.5,-5,120.5,1,124.5,1.5,122,-1,123,-5],[131,-1,141,-2.5,147,-6,150.5,-10.5,143,-9,138,-8,135,-4],
+[120,18.5,122,18.3,124,13,121,13.5],[122,7.5,126,9,126.5,6.5,124,6.5],[120.2,23,121.5,25,122,24.5,120.8,22],
+[-85,22,-80,23.2,-74,20.2,-77.5,19.8,-82,22],[-74.5,18.5,-71.5,19.9,-68.5,18.7,-71.5,17.8],[-59,47.6,-53,47,-52.7,49.5,-55.5,51.5]
+];
+var DST=[["Japan","\uD83C\uDDEF\uD83C\uDDF5",36,138],["Greece","\uD83C\uDDEC\uD83C\uDDF7",39,22],["Morocco","\uD83C\uDDF2\uD83C\uDDE6",32,-6],["Chile","\uD83C\uDDE8\uD83C\uDDF1",-33,-71],["Sri Lanka","\uD83C\uDDF1\uD83C\uDDF0",7.5,80.7],["Iceland","\uD83C\uDDEE\uD83C\uDDF8",64.9,-18.6],["Italy","\uD83C\uDDEE\uD83C\uDDF9",42.5,12.5],["France","\uD83C\uDDEB\uD83C\uDDF7",46.5,2.5],["Spain","\uD83C\uDDEA\uD83C\uDDF8",40,-3.7],["Switzerland","\uD83C\uDDE8\uD83C\uDDED",46.8,8.2],["Norway","\uD83C\uDDF3\uD83C\uDDF4",61,9],["Turkey","\uD83C\uDDF9\uD83C\uDDF7",39,35],["Egypt","\uD83C\uDDEA\uD83C\uDDEC",26.5,30],["Maldives","\uD83C\uDDF2\uD83C\uDDFB",3.2,73.2],["Thailand","\uD83C\uDDF9\uD83C\uDDED",15,101],["Vietnam","\uD83C\uDDFB\uD83C\uDDF3",15.5,107.5],["Indonesia","\uD83C\uDDEE\uD83C\uDDE9",-2,114],["India","\uD83C\uDDEE\uD83C\uDDF3",22,79],["UAE","\uD83C\uDDE6\uD83C\uDDEA",24,54],["South Africa","\uD83C\uDDFF\uD83C\uDDE6",-30,25],["Kenya","\uD83C\uDDF0\uD83C\uDDEA",0.5,38],["Peru","\uD83C\uDDF5\uD83C\uDDEA",-10,-75],["Brazil","\uD83C\uDDE7\uD83C\uDDF7",-10,-52],["Mexico","\uD83C\uDDF2\uD83C\uDDFD",23.5,-102],["Canada","\uD83C\uDDE8\uD83C\uDDE6",56,-106],["USA","\uD83C\uDDFA\uD83C\uDDF8",39,-98],["Australia","\uD83C\uDDE6\uD83C\uDDFA",-25,134],["New Zealand","\uD83C\uDDF3\uD83C\uDDFF",-41,172.5],["Nepal","\uD83C\uDDF3\uD83C\uDDF5",28.2,84],["South Korea","\uD83C\uDDF0\uD83C\uDDF7",36.5,128]];
+var cv=document.getElementById("gl"),cx=cv.getContext("2d"),dots=[],L=80,T=18,drag=null,tgt=null,sel=null,hits=[],lastI=0,vis=true,rm=matchMedia("(prefers-reduced-motion: reduce)").matches,gi=document.getElementById("gi"),dc=document.getElementById("dc");
+function inP(x,y,p){var c=false;for(var i=0,j=p.length-2;i<p.length;j=i,i+=2){if((p[i+1]>y)!=(p[j+1]>y)&&x<(p[j]-p[i])*(y-p[i+1])/(p[j+1]-p[i+1])+p[i])c=!c}return c}
+var BC=["#2f8a57","#23704a","#c2ad74","#8f9a5b","#4d8f58","#e8f0f2"],bk=[[],[],[],[],[],[]];
+for(var la=-58;la<=84;la+=1.7){var stp=1.7/Math.max(.25,Math.cos(la*Math.PI/180));for(var lo=-180;lo<180;lo+=stp){for(var k=0;k<P.length;k++){if(inP(lo,la,P[k])){var al=Math.abs(la),hh=Math.abs((Math.sin(lo*12.9898+la*78.233)*43758.5453)%1)>.5?1:0;bk[al<23?hh:al<40?2+hh:al<66?4:5].push([la,lo]);break}}}}
+function prj(la,lo){var f=la*Math.PI/180,l=(lo-L)*Math.PI/180,t=T*Math.PI/180,c=Math.cos(f);return[c*Math.sin(l),Math.cos(t)*Math.sin(f)-Math.sin(t)*c*Math.cos(l),Math.sin(t)*Math.sin(f)+Math.cos(t)*c*Math.cos(l)]}
+function fit(){var w=Math.round(cv.clientWidth*(window.devicePixelRatio||1));if(w&&cv.width!==w){cv.width=cv.height=w}}
+function draw(){fit();var w=cv.width,r=w/2*.86,c=w/2;cx.clearRect(0,0,w,w);
+var a=cx.createRadialGradient(c,c,r*.98,c,c,r*1.16);a.addColorStop(0,"rgba(110,200,255,.45)");a.addColorStop(1,"rgba(110,200,255,0)");cx.fillStyle=a;cx.beginPath();cx.arc(c,c,r*1.16,0,7);cx.fill();
+var g=cx.createRadialGradient(c-r*.35,c-r*.35,r*.1,c,c,r);g.addColorStop(0,"#2a82b8");g.addColorStop(.55,"#0d4670");g.addColorStop(1,"#041a30");cx.beginPath();cx.arc(c,c,r,0,7);cx.fillStyle=g;cx.fill();
+cx.strokeStyle="rgba(255,255,255,.1)";cx.lineWidth=1;cx.beginPath();
+for(var m=-180;m<180;m+=30){var on=false;for(var q=-80;q<=80;q+=5){var p=prj(q,m);if(p[2]>0){var x=c+p[0]*r,y=c-p[1]*r;if(on)cx.lineTo(x,y);else cx.moveTo(x,y);on=true}else on=false}}
+for(var q2=-60;q2<=60;q2+=30){var on2=false;for(var m2=-180;m2<=180;m2+=5){var p2=prj(q2,m2);if(p2[2]>0){var x2=c+p2[0]*r,y2=c-p2[1]*r;if(on2)cx.lineTo(x2,y2);else cx.moveTo(x2,y2);on2=true}else on2=false}}
+cx.stroke();
+var sz=r*.0125;BC.forEach(function(col,i){cx.fillStyle=col;cx.beginPath();bk[i].forEach(function(d){var p=prj(d[0],d[1]);if(p[2]>0){var x=c+p[0]*r,y=c-p[1]*r;cx.moveTo(x+sz,y);cx.arc(x,y,sz*(.45+.55*p[2]),0,7)}});cx.fill()});
+var sh=cx.createRadialGradient(c,c,r*.5,c,c,r);sh.addColorStop(0,"rgba(0,8,20,0)");sh.addColorStop(1,"rgba(0,8,20,.6)");cx.beginPath();cx.arc(c,c,r,0,7);cx.fillStyle=sh;cx.fill();
+var hl=cx.createRadialGradient(c-r*.4,c-r*.45,0,c-r*.4,c-r*.45,r*.7);hl.addColorStop(0,"rgba(255,255,255,.16)");hl.addColorStop(1,"rgba(255,255,255,0)");cx.fillStyle=hl;cx.fill();
+hits=[];cx.textAlign="center";var fs=Math.round(r*.1);
+DST.forEach(function(d){var p=prj(d[2],d[3]);if(p[2]>.05){var x=c+p[0]*r,y=c-p[1]*r;cx.beginPath();cx.arc(x,y,r*.016,0,7);cx.fillStyle="#ff8160";cx.fill();cx.lineWidth=2;cx.strokeStyle="#fff";cx.stroke();
+if(sel===d){cx.beginPath();cx.arc(x,y,r*.05,0,7);cx.strokeStyle="#ff8160";cx.lineWidth=3;cx.stroke()}
+cx.font=fs+"px 'Noto Color Emoji','Segoe UI Emoji',sans-serif";cx.fillText(d[1],x,y-r*.03);
+if(p[2]>.55||sel===d){cx.font="700 "+Math.round(r*.034)+"px Manrope,sans-serif";cx.lineWidth=3;cx.strokeStyle="rgba(0,10,25,.85)";cx.strokeText(d[0],x,y+r*.07);cx.fillStyle="#fff";cx.fillText(d[0],x,y+r*.07)}
+hits.push([x,y,d])}})}
+
+/* ===== COUNTRY DETAILS (edit freely). cost = rough USD per person for 7 days, mid-range: accommodation, food, local transport, sightseeing (flights not included). Check visa rules before booking. ===== */
+var INFO={
+"Japan":{cap:"Tokyo",pop:"123 million",cur:"Yen (JPY)",lang:"Japanese",best:"Mar–May, Oct–Nov",cost:"$910 – $1,190",places:["Tokyo","Kyoto temples and lantern alleys","Osaka street food","Mount Fuji & Hakone","Hokkaido"]},
+"Greece":{cap:"Athens",pop:"10.3 million",cur:"Euro (EUR)",lang:"Greek",best:"May–Jun, Sep–Oct",cost:"$630 – $910",places:["Athens & the Acropolis","Santorini","Mykonos","Crete","Meteora monasteries"]},
+"Morocco":{cap:"Rabat",pop:"38 million",cur:"Dirham (MAD)",lang:"Arabic, Berber, French",best:"Mar–May, Sep–Nov",cost:"$420 – $630",places:["Marrakech medina","Chefchaouen blue city","Sahara desert camps (Merzouga)","Fes old city","Essaouira coast"]},
+"Chile":{cap:"Santiago",pop:"19.9 million",cur:"Chilean peso (CLP)",lang:"Spanish",best:"Nov–Mar",cost:"$490 – $770",places:["Torres del Paine, Patagonia","Atacama desert","Easter Island","Valparaíso","Santiago & the Andes"]},
+"Sri Lanka":{cap:"Sri Jayawardenepura Kotte (Colombo is the commercial capital)",pop:"22 million",cur:"Sri Lankan rupee (LKR)",lang:"Sinhala, Tamil, English",best:"Dec–Mar (west/south), May–Sep (east)",cost:"$245 – $455",places:["Ella & the hill country","Sigiriya & Dambulla","Kandy","Yala & Udawalawe safaris","Mirissa & Galle"],home:1},
+"Iceland":{cap:"Reykjavík",pop:"0.39 million",cur:"Króna (ISK)",lang:"Icelandic",best:"Jun–Aug (midnight sun), Sep–Mar (northern lights)",cost:"$1,260 – $1,750",places:["Golden Circle","Blue Lagoon","Vík black sand beach","Jökulsárlón glacier lagoon","Northern lights"]},
+"Italy":{cap:"Rome",pop:"59 million",cur:"Euro (EUR)",lang:"Italian",best:"Apr–Jun, Sep–Oct",cost:"$840 – $1,190",places:["Rome","Venice","Florence & Tuscany","Amalfi Coast","Dolomites"]},
+"France":{cap:"Paris",pop:"68 million",cur:"Euro (EUR)",lang:"French",best:"Apr–Jun, Sep–Oct",cost:"$910 – $1,330",places:["Paris","French Riviera","Provence lavender fields","Loire castles","Mont Saint-Michel"]},
+"Spain":{cap:"Madrid",pop:"49 million",cur:"Euro (EUR)",lang:"Spanish",best:"Apr–Jun, Sep–Oct",cost:"$700 – $1,050",places:["Barcelona","Madrid","Seville & Granada (Alhambra)","San Sebastián food scene","Canary Islands"]},
+"Switzerland":{cap:"Bern",pop:"9 million",cur:"Swiss franc (CHF)",lang:"German, French, Italian",best:"Jun–Sep (hiking), Dec–Mar (snow)",cost:"$1,540 – $2,100",places:["Interlaken & Jungfrau","Zermatt & the Matterhorn","Lucerne","Lausanne & Lake Geneva","Scenic train rides"]},
+"Norway":{cap:"Oslo",pop:"5.6 million",cur:"Norwegian krone (NOK)",lang:"Norwegian",best:"Jun–Aug, Dec–Mar (aurora)",cost:"$1,260 – $1,750",places:["Fjords (Geiranger, Nærøyfjord)","Tromsø northern lights","Lofoten Islands","Bergen","Oslo"]},
+"Turkey":{cap:"Ankara",pop:"87 million",cur:"Turkish lira (TRY)",lang:"Turkish",best:"Apr–Jun, Sep–Nov",cost:"$455 – $700",places:["Istanbul","Cappadocia balloons","Pamukkale","Ephesus","Antalya coast"]},
+"Egypt":{cap:"Cairo",pop:"116 million",cur:"Egyptian pound (EGP)",lang:"Arabic",best:"Oct–Apr",cost:"$350 – $560",places:["Giza pyramids & Cairo","Luxor & Valley of the Kings","Aswan & Abu Simbel","Nile cruise","Red Sea diving (Hurghada)"]},
+"Maldives":{cap:"Malé",pop:"0.52 million",cur:"Rufiyaa (MVR)",lang:"Dhivehi",best:"Nov–Apr",cost:"$1,050 – $1,750",places:["Resort & local islands","Snorkelling with manta rays","Maafushi & Thulusdhoo","Sandbank picnics","Male city"]},
+"Thailand":{cap:"Bangkok",pop:"66 million",cur:"Baht (THB)",lang:"Thai",best:"Nov–Feb",cost:"$385 – $630",places:["Bangkok","Chiang Mai","Phuket & Phi Phi islands","Krabi","Ayutthaya"]},
+"Vietnam":{cap:"Hanoi",pop:"101 million",cur:"Dong (VND)",lang:"Vietnamese",best:"Feb–Apr, Sep–Nov",cost:"$280 – $490",places:["Ha Long Bay","Hanoi old quarter","Hoi An","Ho Chi Minh City","Da Nang & Ba Na Hills"]},
+"Indonesia":{cap:"Jakarta",pop:"283 million",cur:"Rupiah (IDR)",lang:"Indonesian",best:"Apr–Oct",cost:"$315 – $560",places:["Bali (Ubud, Uluwatu)","Borobudur & Yogyakarta","Komodo Island","Mount Bromo","Raja Ampat"]},
+"India":{cap:"New Delhi",pop:"1.45 billion",cur:"Rupee (INR)",lang:"Hindi, English and many more",best:"Oct–Mar",cost:"$245 – $455",places:["Taj Mahal, Agra","Jaipur & Rajasthan","Kerala backwaters","Goa","Varanasi"]},
+"UAE":{cap:"Abu Dhabi",pop:"11 million",cur:"Dirham (AED)",lang:"Arabic, English widely",best:"Nov–Mar",cost:"$840 – $1,400",places:["Dubai (Burj Khalifa)","Abu Dhabi Grand Mosque","Desert safari","Louvre Abu Dhabi","Hatta mountains"]},
+"South Africa":{cap:"Pretoria, Cape Town & Bloemfontein",pop:"64 million",cur:"Rand (ZAR)",lang:"11 official languages incl. English",best:"May–Sep (safari), Nov–Mar (coast)",cost:"$455 – $770",places:["Cape Town & Table Mountain","Kruger National Park","Garden Route","Cape Winelands","Drakensberg"]},
+"Kenya":{cap:"Nairobi",pop:"56 million",cur:"Shilling (KES)",lang:"Swahili, English",best:"Jul–Oct (migration), Jan–Feb",cost:"$560 – $980",places:["Maasai Mara safari","Amboseli & Kilimanjaro views","Nairobi National Park","Diani Beach","Lake Nakuru"]},
+"Peru":{cap:"Lima",pop:"34 million",cur:"Sol (PEN)",lang:"Spanish, Quechua",best:"May–Sep",cost:"$350 – $595",places:["Machu Picchu & Cusco","Sacred Valley","Rainbow Mountain","Lima food scene","Amazon rainforest"]},
+"Brazil":{cap:"Brasília",pop:"213 million",cur:"Real (BRL)",lang:"Portuguese",best:"May–Oct",cost:"$455 – $770",places:["Rio de Janeiro","Iguaçu Falls","Amazon rainforest","Salvador","Lençóis Maranhenses"]},
+"Mexico":{cap:"Mexico City",pop:"131 million",cur:"Peso (MXN)",lang:"Spanish",best:"Nov–Apr",cost:"$420 – $700",places:["Mexico City","Chichén Itzá & Yucatán","Tulum & Cancún","Oaxaca","Cenotes"]},
+"Canada":{cap:"Ottawa",pop:"41 million",cur:"Canadian dollar (CAD)",lang:"English, French",best:"Jun–Sep, Dec–Mar (snow)",cost:"$910 – $1,400",places:["Banff & Lake Louise","Niagara Falls","Vancouver","Toronto & Montréal","Northern lights (Yukon)"]},
+"USA":{cap:"Washington, D.C.",pop:"342 million",cur:"US dollar (USD)",lang:"English",best:"Apr–Jun, Sep–Oct",cost:"$1,050 – $1,750",places:["New York City","Grand Canyon","California coast & Yosemite","Hawaii","Yellowstone"]},
+"Australia":{cap:"Canberra",pop:"27 million",cur:"Australian dollar (AUD)",lang:"English",best:"Sep–Nov, Mar–May",cost:"$980 – $1,470",places:["Sydney","Great Barrier Reef","Melbourne & Great Ocean Road","Uluru","Perth & Margaret River"]},
+"New Zealand":{cap:"Wellington",pop:"5.3 million",cur:"NZ dollar (NZD)",lang:"English, Māori",best:"Dec–Mar",cost:"$910 – $1,400",places:["Queenstown & Milford Sound","Rotorua","Auckland","Hobbiton","Fox & Franz Josef glaciers"]},
+"Nepal":{cap:"Kathmandu",pop:"29.5 million",cur:"Nepalese rupee (NPR)",lang:"Nepali",best:"Oct–Nov, Mar–Apr",cost:"$210 – $385",places:["Kathmandu valley","Pokhara","Everest Base Camp trek","Annapurna region","Chitwan National Park"]},
+"South Korea":{cap:"Seoul",pop:"51.7 million",cur:"Won (KRW)",lang:"Korean",best:"Apr–Jun, Sep–Nov",cost:"$630 – $980",places:["Seoul","Jeju Island","Busan","Gyeongju","Seoraksan National Park"]}
+};
+function km2(la,lo){var R=6371,r=Math.PI/180,a1=6.93*r,a2=la*r,dl=(lo-79.85)*r,x=Math.sin((a2-a1)/2)*Math.sin((a2-a1)/2)+Math.cos(a1)*Math.cos(a2)*Math.sin(dl/2)*Math.sin(dl/2);return 2*R*Math.asin(Math.sqrt(x))}
+function showInfo(d){
+var o=INFO[d[0]],box=document.getElementById("gd");box.hidden=false;document.getElementById("gw").classList.add("has");if(!o){box.innerHTML='<p class="hint">Details coming soon.</p>';return}
+var dist=o.home?0:Math.round(km2(d[2],d[3])/50)*50,fh=o.home?0:Math.round(dist/800+(dist>5000?3.5:1.2));
+var kp=o.home?'<div><small>Distance</small><b>You are here</b><span>Home island</span></div><div><small>Travel</small><b>By road / train</b><span>Domestic trip</span></div>'
+:'<div><small>From Sri Lanka</small><b>'+dist.toLocaleString("en-US")+' km</b><span>straight line from Colombo</span></div><div><small>Flight time</small><b>~'+fh+' h</b><span>rough, depends on stops</span></div>';
+kp+='<div><small>Approx. cost</small><b>'+esc(o.cost)+'</b><span>per person, 7 days, mid-range (excl. flights)</span></div><div><small>Population</small><b>'+esc(o.pop)+'</b><span>approx.</span></div>';
+box.innerHTML='<h3><span class="fl">'+d[1]+'</span>'+esc(d[0])+'</h3><p class="cap2">Capital: '+esc(o.cap)+'</p><div class="kp">'+kp+'</div>'
++'<dl><dt>Currency</dt><dd>'+esc(o.cur)+'</dd><dt>Language</dt><dd>'+esc(o.lang)+'</dd><dt>Best time</dt><dd>'+esc(o.best)+'</dd></dl>'
++'<h4>Places to visit</h4><ul>'+o.places.map(function(p){return "<li>"+esc(p)+"</li>"}).join("")+'</ul>'
++'<a class="btn" href="https://www.google.com/maps/search/'+encodeURIComponent(d[0])+'" target="_blank" rel="noopener">Open in Google Maps</a>'
++'<p class="nt">Costs (flights not included), distances and populations are rough estimates. Check visa rules and current prices before you book.</p>'}
+var auto=true;
+function loop(){if(vis){if(tgt){var dl=((tgt[0]-L+540)%360+360)%360-180;L+=dl*.12;T+=(tgt[1]-T)*.12;if(Math.abs(dl)<.3&&Math.abs(tgt[1]-T)<.3)tgt=null}else if(!drag&&auto&&Date.now()-lastI>2500){L+=.15}L=((L+180)%360+360)%360-180;draw()}requestAnimationFrame(loop)}
+function pick(d){showInfo(d);sel=d;tgt=[d[3],Math.max(-40,Math.min(50,d[2]*.6))];lastI=Date.now();gi.innerHTML='<span class="fl">'+d[1]+'</span> '+esc(d[0]);dc.querySelectorAll(".chip").forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-n")===d[0])})}
+dc.innerHTML=DST.map(function(d){return '<button class="chip" aria-pressed="false" data-n="'+esc(d[0])+'"><span class="fl">'+d[1]+'</span> '+esc(d[0])+'</button>'}).join("");
+dc.addEventListener("click",function(e){var b=e.target.closest(".chip");if(!b)return;DST.forEach(function(d){if(d[0]===b.getAttribute("data-n"))pick(d)})});
+cv.addEventListener("pointerdown",function(e){drag={x:e.clientX,y:e.clientY,m:0};tgt=null;lastI=Date.now();cv.setPointerCapture(e.pointerId)});
+cv.addEventListener("pointermove",function(e){if(!drag)return;var dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.m+=Math.abs(dx)+Math.abs(dy);drag.x=e.clientX;drag.y=e.clientY;L-=dx*.4;T=Math.max(-60,Math.min(60,T+dy*.3));lastI=Date.now()});
+cv.addEventListener("pointerup",function(e){if(drag&&drag.m<6){var b=cv.getBoundingClientRect(),k2=cv.width/b.width,x=(e.clientX-b.left)*k2,y=(e.clientY-b.top)*k2,best=null,bd=1e9;hits.forEach(function(h){var q=Math.hypot(h[0]-x,h[1]-y);if(q<bd){bd=q;best=h[2]}});if(best&&bd<cv.width*.06)pick(best)}drag=null;lastI=Date.now()});
+if(window.IntersectionObserver)new IntersectionObserver(function(es){vis=es[0].isIntersecting}).observe(cv);
+loop();
+var ar=document.getElementById("ar");ar.addEventListener("click",function(){auto=!auto;ar.setAttribute("aria-pressed",auto);ar.textContent="Auto-rotate: "+(auto?"on":"off")});
+
+(function(){
+var PHOTO_FORM="https://docs.google.com/forms/d/e/1FAIpQLSe71AQc5kOJ86iaH0Fas-w0iQEl5xzDjRP02chloW6YH9flNw/viewform?usp=publish-editor"; // paste your Google Form or WhatsApp link here for traveller photos
+var TRIP={name:"Sample trip: Hill country run",id:"VIDEO_ID_TRIP",stops:[
+{n:"Colombo",t:0,lat:6.93,lon:79.85,note:"Loading the vehicles at sunrise."},
+{n:"Kandy",t:240,lat:7.29,lon:80.63,note:"Fuel, groceries and the first big climb."},
+{n:"Nuwara Eliya",t:520,lat:6.97,lon:80.77,note:"Cold mornings above the clouds."},
+{n:"Ella",t:810,lat:6.87,lon:81.05,note:"Offroad tracks and tea hills."},
+{n:"Yala",t:1100,lat:6.37,lon:81.5,note:"Camp by the national park."}]};
+var STEPS=[["01","Plan the trip","Route, dates and crew",""],["02","Build the vehicle","Offroad prep and mods",""],["03","Buy the groceries","Food, water and supplies",""],["04","The ride","On the road and offroad",""],["05","Arrive","Camp, views and wrap-up",""]];
+var VEH=[{n:"Trail Rig 01",s:"4x4 pickup, diesel",m:["All-terrain tyres","Snorkel","Winch","Roof rack"],id:"",a:"#8a2f1b",b:"#ffb347"},{n:"Light Explorer",s:"Compact 4x4, petrol",m:["Lift kit","Skid plates","LED light bar"],id:"",a:"#13633b",b:"#d9f26b"},{n:"Expedition Van",s:"Camper van, diesel",m:["Solar panel","Water tank","Awning"],id:"",a:"#1b2f6b",b:"#7ee0ff"}];
+var PH=[{p:"Ella",a:"#13633b",b:"#d9f26b",h:230,src:""},{p:"Yala",a:"#8a2f1b",b:"#ffb347",h:170,src:""},{p:"Kandy",a:"#0f5f9b",b:"#7ee0ff",h:200,src:""},{p:"Nuwara Eliya",a:"#0b4f5a",b:"#9be8d8",h:250,src:""},{p:"Sigiriya",a:"#6b2f1b",b:"#ffd27a",h:180,src:""},{p:"Mirissa",a:"#14284f",b:"#6cf0b4",h:220,src:""},{p:"Trincomalee",a:"#1b2f6b",b:"#ff7a8a",h:190,src:""},{p:"Horton Plains",a:"#13633b",b:"#a8e6cf",h:240,src:""}];
+function g(id){return document.getElementById(id)}
+function mmss(x){var m=Math.floor(x/60),r=x%60;return m+":"+(r<10?"0":"")+r}
+function watch(id,t){return "https://www.youtube.com/watch?v="+id+(t?"&t="+t+"s":"")}
+g("jsteps").innerHTML=STEPS.map(function(x){return '<a class="st2" href="'+(x[3]?watch(x[3]):CHANNEL)+'" target="_blank" rel="noopener"><span class="n">'+x[0]+'</span><b>'+esc(x[1])+'</b><small>'+esc(x[2])+'</small></a>'}).join("");
+/* route tracker */
+var S=TRIP.stops,W=400,H=300,pad=46,cur=-1,pl=null,real=TRIP.id.indexOf("VIDEO_ID")!==0;
+var las=S.map(function(o){return o.lat}),los=S.map(function(o){return o.lon});
+var mnA=Math.min.apply(0,las),mxA=Math.max.apply(0,las),mnO=Math.min.apply(0,los),mxO=Math.max.apply(0,los);
+var cs=Math.cos((mnA+mxA)/2*Math.PI/180),kk=Math.min((W-2*pad)/Math.max(.01,(mxO-mnO)*cs),(H-2*pad)/Math.max(.01,mxA-mnA));
+var ox=(W-(mxO-mnO)*cs*kk)/2,oy=(H-(mxA-mnA)*kk)/2;
+var pts=S.map(function(o){return[(o.lon-mnO)*cs*kk+ox,(mxA-o.lat)*kk+oy]});
+var sv='';for(var i=40;i<W;i+=40)sv+='<line x1="'+i+'" y1="0" x2="'+i+'" y2="'+H+'" stroke="rgba(255,255,255,.07)"/>';
+for(var j=40;j<H;j+=40)sv+='<line x1="0" y1="'+j+'" x2="'+W+'" y2="'+j+'" stroke="rgba(255,255,255,.07)"/>';
+var line=pts.map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1)}).join(" ");
+sv+='<polyline points="'+line+'" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2" stroke-dasharray="5 6"/><polyline id="tpr" points="" fill="none" stroke="#ff8160" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>';
+S.forEach(function(o,n){sv+='<circle cx="'+pts[n][0]+'" cy="'+pts[n][1]+'" r="5" fill="#f3ebdd"/><text x="'+pts[n][0]+'" y="'+(pts[n][1]-12)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" stroke="rgba(0,20,30,.7)" stroke-width="3" paint-order="stroke" font-family="Manrope,sans-serif">'+esc(o.n)+'</text>'});
+sv+='<g id="tmk" style="transform:translate('+pts[0][0]+'px,'+pts[0][1]+'px)"><circle r="14" fill="rgba(255,129,96,.3)"/><circle r="8" fill="#ff8160" stroke="#fff" stroke-width="2.5"/></g>';
+g("tsvg").innerHTML=sv;
+g("chs").innerHTML=S.map(function(o,n){return '<li><button type="button" data-i="'+n+'"><span>'+mmss(o.t)+'</span>'+esc(o.n)+'</button></li>'}).join("");
+function setStop(n){cur=n;g("tpr").setAttribute("points",pts.slice(0,n+1).map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1)}).join(" "));g("tmk").style.transform="translate("+pts[n][0]+"px,"+pts[n][1]+"px)";
+g("chs").querySelectorAll("button").forEach(function(b){b.setAttribute("aria-current",b.getAttribute("data-i")==n)});
+var o=S[n];g("tnote").innerHTML='<b>'+esc(o.n)+'</b><p>'+esc(o.note)+'</p><a href="https://www.google.com/maps?q='+o.lat+','+o.lon+'" target="_blank" rel="noopener">Open in Google Maps</a>'+(real?'':'<a href="'+CHANNEL+'" target="_blank" rel="noopener">Watch on YouTube</a>')}
+g("chs").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;var n=+b.getAttribute("data-i");setStop(n);if(pl&&pl.seekTo){pl.seekTo(S[n].t,true);pl.playVideo()}else if(real){window.open(watch(TRIP.id,S[n].t),"_blank","noopener")}});
+if(real){g("tvid").innerHTML='<iframe id="ytf" src="https://www.youtube.com/embed/'+TRIP.id+'?enablejsapi=1&rel=0" title="Trip video" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+var sc=document.createElement("script");sc.src="https://www.youtube.com/iframe_api";document.head.appendChild(sc);
+window.onYouTubeIframeAPIReady=function(){pl=new YT.Player("ytf",{events:{onReady:function(){setInterval(function(){if(!pl.getCurrentTime)return;var t=pl.getCurrentTime(),m=0;for(var q=0;q<S.length;q++){if(t>=S[q].t)m=q}if(m!==cur)setStop(m)},500)}}})}}
+else{g("tvid").innerHTML='<a class="player" style="height:100%;border:0;border-radius:0" href="'+CHANNEL+'" target="_blank" rel="noopener"><span class="tag">Sample</span><span class="play" aria-hidden="true"></span><span class="cap"><b>'+esc(TRIP.name)+'</b></span></a>'}
+setStop(0);
+/* planner */
+function num(id,d,mx){var v=parseInt(g(id).value,10);if(!(v>0))v=d;return Math.min(v,mx)}
+var lastTxt="";
+g("pgo").addEventListener("click",function(){
+var dest=g("pd").value.trim()||"our next trip",d=num("pdays",3,30),p=num("ppl",4,20),veh=g("pv").value,pd=p*d;
+var G=["Drinking water: "+(3*pd)+" L","Rice: "+(Math.round(.15*pd*10)/10)+" kg","Bread, biscuits and snacks for "+pd+" person-days","Eggs, canned fish, dhal and vegetables","Tea, coffee, sugar and milk powder","Cooking gas and a lighter","Plates, cups, cutlery and bin bags"];
+var V=[veh+": check tyre pressure and tread","Spare wheel, jack and wheel spanner","Engine oil, coolant, brake and gear fluids","Battery and jump leads","Full tank plus a spare fuel can","Recovery straps, shackles and a shovel","Basic tool kit, spare fuses and bulbs"];
+var X=["First aid kit and personal medicines","Torch or headlamp, and a power bank","Tent or tarp, sleeping bags and mats","Raincoats, sun hats and sunscreen","ID, licences and vehicle papers","Offline map of the area downloaded"];
+var all=[["Groceries",G],["Vehicle checks",V],["Gear",X]],total=G.length+V.length+X.length;
+var h='<h3>'+esc(dest)+': '+d+' day'+(d>1?'s':'')+', '+p+' '+(p>1?'people':'person')+'</h3><div class="prog" aria-hidden="true"><i id="pbar"></i></div><div id="pcnt">0 of '+total+' done</div>';
+all.forEach(function(a){h+='<h4>'+a[0]+'</h4>'+a[1].map(function(t){return '<label><input type="checkbox"><span>'+esc(t)+'</span></label>'}).join("")});
+h+='<div class="acts"><button type="button" id="pcopy">Copy list</button><button type="button" id="pprint">Print or save as PDF</button></div>';
+g("plr").innerHTML=h;
+lastTxt=dest+": "+d+" days, "+p+" people\n"+all.map(function(a){return "\n"+a[0]+"\n"+a[1].map(function(t){return "[ ] "+t}).join("\n")}).join("\n");
+g("pprint").addEventListener("click",function(){window.print()});
+g("pcopy").addEventListener("click",function(){var b=g("pcopy");try{navigator.clipboard.writeText(lastTxt).then(function(){b.textContent="Copied"},function(){b.textContent="Copy failed"})}catch(e){b.textContent="Copy failed"}});
+g("plr").addEventListener("change",function(){var n=g("plr").querySelectorAll("input:checked").length;g("pbar").style.width=(n/total*100)+"%";g("pcnt").textContent=n+" of "+total+" done"})});
+/* gallery */
+g("gal").innerHTML=PH.map(function(x,n){return '<button type="button" class="gi2" data-i="'+n+'" style="height:'+x.h+'px;'+(x.src?'':'background:linear-gradient(135deg,'+x.a+','+x.b+')')+'">'+(x.src?'<img src="'+esc(x.src)+'" alt="'+esc(x.p)+'" loading="lazy">':'')+'<span>'+esc(x.p)+'</span></button>'}).join("");
+g("gshare").href=PHOTO_FORM||CHANNEL;
+function closeLb(){g("lb").hidden=true}
+g("gal").addEventListener("click",function(e){var b=e.target.closest(".gi2");if(!b)return;var x=PH[+b.getAttribute("data-i")];g("lbc").style.background=x.src?"#000":"linear-gradient(135deg,"+x.a+","+x.b+")";g("lbc").innerHTML=(x.src?'<img src="'+esc(x.src)+'" alt="'+esc(x.p)+'">':'')+'<b>'+esc(x.p)+'</b>';g("lb").hidden=false;g("lbx").focus()});
+g("lbx").addEventListener("click",closeLb);g("lb").addEventListener("click",function(e){if(e.target===g("lb"))closeLb()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeLb()});
+})();
+document.getElementById("tg").addEventListener("click",function(){var d=document.documentElement,c=d.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");d.setAttribute("data-theme",c==="light"?"dark":"light")});
+render();
+</script>
+<div class="ppm" id="ppm" hidden role="dialog" aria-modal="true" aria-label="Digital passport"><div class="ppbox"><button class="lbx" id="ppx" type="button" aria-label="Close">✕</button><div id="ppb"></div></div></div>
+<script>
+/* ===== SRI LANKA TRIPS: edit titles, notes and put your real YouTube ID in id:"" ===== */
+var LK=[
+{n:"Jaffna",lat:9.66,lon:80.02,side:"l",region:"Culture",best:"Feb–Sep",title:"Jaffna: temples and northern flavours",note:"Nallur Kovil, the old fort and the food of the far north.",a:"#8a2f1b",b:"#ffb347"},
+{n:"Anuradhapura",lat:8.31,lon:80.40,side:"l",region:"Culture",best:"May–Sep",title:"Anuradhapura: the ancient capital",note:"Giant stupas and the sacred Bo tree.",a:"#6b2f1b",b:"#ffd27a"},
+{n:"Polonnaruwa",lat:7.94,lon:81.00,side:"r",region:"Culture",best:"May–Sep",title:"Polonnaruwa by bicycle",note:"Ruins, lakes and the Gal Vihara Buddha statues.",a:"#7a4b1b",b:"#f5d68a"},
+{n:"Sigiriya",lat:7.96,lon:80.76,side:"l",region:"Culture",best:"May–Sep",title:"Sigiriya: climbing the Lion Rock",note:"Sunrise above the jungle on the rock fortress.",a:"#8a2f1b",b:"#ffb347"},
+{n:"Trincomalee",lat:8.57,lon:81.23,side:"r",region:"Beach",best:"Mar–Oct",title:"Trincomalee: blue bays and snorkelling",note:"Nilaveli, Pigeon Island and calm east coast water.",a:"#0f5f9b",b:"#7ee0ff"},
+{n:"Kandy",lat:7.29,lon:80.63,side:"l",region:"Culture",best:"Jan–Apr",title:"Kandy: lake, temple and drums",note:"The Temple of the Tooth and the hill capital.",a:"#13633b",b:"#d9f26b"},
+{n:"Colombo",lat:6.93,lon:79.85,side:"l",region:"City",best:"Dec–Mar",title:"Colombo: street food and sea breeze",note:"Galle Face, markets and the city after dark.",a:"#1b2f6b",b:"#ff7a8a"},
+{n:"Nuwara Eliya",lat:6.97,lon:80.77,side:"l",region:"Hill country",best:"Feb–Apr",title:"Nuwara Eliya: little England in the clouds",note:"Tea estates, cold mornings and misty lakes.",a:"#0b4f5a",b:"#9be8d8"},
+{n:"Sri Pada",lat:6.81,lon:80.50,side:"l",region:"Hill country",best:"Dec–May (pilgrim season)",title:"Sri Pada: the night climb",note:"Thousands of steps to sunrise on Adam's Peak.",a:"#14284f",b:"#6cf0b4"},
+{n:"Ella",lat:6.87,lon:81.05,side:"r",region:"Hill country",best:"Jan–Mar",title:"Ella: tea hills and the Nine Arches",note:"The blue train, Little Adam's Peak and misty valleys.",a:"#13633b",b:"#d9f26b"},
+{n:"Yala",lat:6.37,lon:81.50,side:"r",region:"Wildlife",best:"Feb–Jul",title:"Yala: leopards at dawn",note:"Safari jeeps, elephants and a camp by the park.",a:"#8a2f1b",b:"#ffb347"},
+{n:"Arugam Bay",lat:6.84,lon:81.84,side:"t",region:"Beach",best:"May–Sep (surf)",title:"Arugam Bay: surf and slow days",note:"Point breaks, lagoons and east coast sunsets.",a:"#0f5f9b",b:"#ffd27a"},
+{n:"Galle",lat:6.03,lon:80.22,side:"l",region:"Beach",best:"Dec–Mar",title:"Galle Fort at golden hour",note:"Ramparts, cafes and the lighthouse by the sea.",a:"#6b2f1b",b:"#ffd27a"},
+{n:"Mirissa",lat:5.95,lon:80.45,side:"r",region:"Beach",best:"Nov–Apr (whales)",title:"Mirissa: whales and palm beaches",note:"Blue whale season and coconut tree hill.",a:"#14284f",b:"#6cf0b4"}
+];
+LK.forEach(function(p,i){p.key="LK:"+p.n;p.place=p.n;p.flag="\uD83C\uDDF1\uD83C\uDDF0";p.sub="SRI LANKA";p.id=p.id||"VIDEO_ID_LK_"+(i+1)});
+</script>
+<script>
+/* ===== DIGITAL PASSPORT (world + Sri Lanka) ===== */
+(function(){
+var KEY="sta_passport";
+function g(id){return document.getElementById(id)}
+var FLAGS={};DST.forEach(function(d){FLAGS[d[0]]=d[1]});
+var PLACES=[];VIDEOS.forEach(function(v){if(PLACES.indexOf(v.place)<0)PLACES.push(v.place)});
+function load(){try{var x=JSON.parse(localStorage.getItem(KEY)||"null");if(x&&x.id&&x.stamps)return x}catch(e){}return null}
+var pp=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(pp))}catch(e){}}
+function newId(){var c="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="",a=[];try{a=Array.from(crypto.getRandomValues(new Uint8Array(6)))}catch(e){for(var j=0;j<6;j++)a.push(Math.floor(Math.random()*256))}for(var i=0;i<6;i++)s+=c.charAt(a[i]%c.length);return "STA-"+s}
+function today(){return new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function level(n){return n<1?"New Explorer":n<2?"Rookie Explorer":n<4?"Wanderer":n<8?"Globetrotter":"Master Explorer"}
+function vkey(v){return v.key||v.place}
+function fl(v){return '<span class="fl">'+(v.flag||FLAGS[v.place]||"\uD83C\uDF0D")+'</span>'}
+function counts(){var w=0,l=0;Object.keys(pp.stamps).forEach(function(k){if(k.indexOf("LK:")===0)l++;else w++});return{w:w,l:l,t:w+l}}
+function renderCard(){
+var el=g("pcard");
+if(!pp){el.innerHTML='<div class="pempty"><div style="font-size:48px">\uD83D\uDEC2</div><p>No passport yet. Finish watching any trip, around the world or in Sri Lanka, and you can unlock your first stamp.</p><a class="btn" href="#cats">Choose a trip</a></div>';if(window.lkRefresh)lkRefresh();return}
+var c=counts(),countries=c.w+(c.l>0?1:0);
+var rows=PLACES.map(function(p){var s=pp.stamps[p];return '<button type="button" class="prow '+(s?"on":"off")+'" data-p="'+esc(p)+'"><span>'+fl({place:p})+' '+esc(p)+'</span><span class="st">'+(s?"Stamped \u2713 · "+esc(s.date):"Locked \u00B7 watch to unlock")+'</span></button>'}).join("");
+var chips=LK.map(function(p){var s=pp.stamps[p.key];return '<button type="button" class="pchip '+(s?"on":"off")+'" data-k="'+esc(p.key)+'">'+(s?"\u2713 ":"")+esc(p.n)+'</button>'}).join("");
+el.innerHTML='<div class="pcard"><div class="pcov"><small>STORIES THROUGH AI</small><h3>\uD83C\uDF0D GLOBAL EXPLORER PASSPORT</h3></div>'
++'<div class="pfields"><div><small>Explorer Name</small><b>'+esc(pp.name)+'</b></div><div><small>Passport ID</small><b>'+esc(pp.id)+'</b></div><div><small>Date Joined</small><b>'+esc(pp.joined)+'</b></div>'
++'<div><small>Countries Explored</small><b>'+countries+' / '+(PLACES.length+1)+'</b></div><div><small>Total Travel Stamps</small><b>'+c.t+'</b></div><div><small>Explorer Level</small><b>'+level(c.t)+'</b></div></div>'
++'<div class="ptab"><h4>Around the world</h4>'+rows+'<h4 style="margin-top:20px">\uD83C\uDDF1\uD83C\uDDF0 Sri Lanka · '+c.l+' / '+LK.length+' places</h4><div class="pchips">'+chips+'</div></div></div>';
+if(window.lkRefresh)lkRefresh();
+}
+g("pcard").addEventListener("click",function(e){
+var b=e.target.closest(".prow,.pchip");if(!b)return;
+if(b.classList.contains("prow")){var p=b.getAttribute("data-p");if(pp&&pp.stamps[p])return;for(var i=0;i<VIDEOS.length;i++){if(VIDEOS[i].place===p){openVideo(VIDEOS[i]);return}}}
+else{var k=b.getAttribute("data-k");for(var j=0;j<LK.length;j++){if(LK[j].key===k){openVideo(LK[j]);return}}}
+});
+var ppm=g("ppm"),ppb=g("ppb"),yp=null,curV=null;
+function ensureYT(cb){
+if(window.YT&&YT.Player){cb();return}
+var prev=window.onYouTubeIframeAPIReady;
+window.onYouTubeIframeAPIReady=function(){if(prev)try{prev()}catch(e){}cb()};
+if(!document.querySelector('script[src*="youtube.com/iframe_api"]')){var s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.head.appendChild(s)}
+}
+function killPlayer(){try{if(yp&&yp.destroy)yp.destroy()}catch(e){}yp=null}
+function closeM(){killPlayer();ppm.hidden=true;document.body.style.overflow="";ppb.innerHTML="";renderCard()}
+g("ppx").addEventListener("click",closeM);
+ppm.addEventListener("click",function(e){if(e.target===ppm)closeM()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!ppm.hidden)closeM()});
+function openVideo(v){
+curV=v;ppm.hidden=false;document.body.style.overflow="hidden";killPlayer();
+var real=v.id.indexOf("VIDEO_ID")!==0,have=pp&&pp.stamps[vkey(v)];
+ppb.innerHTML='<h3 class="pph">'+fl(v)+' '+esc(v.title)+'</h3><div class="tvid" id="ppv"></div><p class="ppn">'+(have?"You already have the "+esc(v.place)+" stamp. Enjoy the trip again!":"Watch the full video to unlock your "+esc(v.place)+" passport stamp.")+'</p>';
+if(real){ensureYT(function(){yp=new YT.Player("ppv",{videoId:v.id,playerVars:{rel:0,autoplay:1},events:{onStateChange:function(e){if(e.data===0)finished()}}})})}
+else{g("ppv").innerHTML='<div class="demo"><b>Demo mode</b><span>This trip still has a placeholder video ID, so the real video can\u2019t play yet.</span><button class="btn" id="ppdemo" type="button">Simulate: video finished</button></div>';g("ppdemo").addEventListener("click",finished)}
+}
+function finished(){
+var v=curV,done=pp&&pp.stamps[vkey(v)];killPlayer();
+ppb.innerHTML='<div class="cg"><div class="big">\uD83C\uDF89</div><h3>Congratulations! You\u2019ve completed your journey to '+esc(v.place)+'!</h3>'+
+(done?'<p class="ppn" style="margin:0 0 18px">You already hold this stamp.</p><button class="btn" id="ppview" type="button">VIEW MY PASSPORT \u2192</button>'
+:'<button class="btn" id="ppu" type="button">UNLOCK MY '+esc(v.place.toUpperCase())+' PASSPORT \u2192</button>')+'</div>';
+if(done)g("ppview").addEventListener("click",goPassport);else g("ppu").addEventListener("click",showForm);
+}
+function showForm(){
+var v=curV;
+ppb.innerHTML='<h3 class="pph">\uD83D\uDEC2 Fill your digital passport</h3><form class="ppf" id="ppfm" novalidate>'
++(pp?'':'<label>Explorer Name (Nickname)<input id="ppname" maxlength="24" autocomplete="nickname" placeholder="e.g. Wanderer Sam"></label>')
++'<label>Favourite Destination<input id="ppfav" maxlength="40" placeholder="e.g. Kyoto lantern alleys"></label>'
++'<label>What did you enjoy most about this journey?<textarea id="ppen" maxlength="240"></textarea></label>'
++'<label>Would you like to explore '+esc(v.place)+' someday?<select id="ppwish"><option>Yes, definitely!</option><option>Maybe one day</option><option>Not right now</option></select></label>'
++'<p class="err" id="pperr" role="alert"></p><button class="btn" type="submit">CREATE MY PASSPORT</button></form>';
+g("ppfm").addEventListener("submit",function(e){
+e.preventDefault();
+var nm=pp?pp.name:g("ppname").value.trim();
+if(!nm){g("pperr").textContent="Please enter your Explorer Name.";g("ppname").focus();return}
+if(!pp)pp={name:nm,id:newId(),joined:today(),stamps:{}};
+pp.stamps[vkey(v)]={date:today(),fav:g("ppfav").value.trim(),enjoy:g("ppen").value.trim(),wish:g("ppwish").value};
+save();showStamp();
+})}
+function showStamp(){
+var v=curV,c=counts();
+ppb.innerHTML='<div class="cg"><h3>\uD83D\uDEC2 Stamp collected!</h3></div><div class="stampwrap"><div class="stamp">'+fl(v)+'<b>'+esc(v.place.toUpperCase())+'</b><small>'+esc(pp.stamps[vkey(v)].date)+'</small><small>'+esc(v.sub||"STORIES THROUGH AI")+'</small></div></div>'
++'<p class="ppn" style="text-align:center">Total stamps: '+c.t+' · Level: '+level(c.t)+'</p><div class="pacts" style="justify-content:center"><button class="btn" id="ppview" type="button">VIEW MY PASSPORT \u2192</button><button class="btn ghost" id="ppmore" type="button">Watch another trip</button></div>';
+g("ppview").addEventListener("click",goPassport);g("ppmore").addEventListener("click",function(){closeM()});
+}
+function goPassport(){closeM();var s=g("passport");if(s)s.scrollIntoView({behavior:"smooth"})}
+g("grid").addEventListener("click",function(e){var a=e.target.closest(".pass");if(!a)return;e.preventDefault();var t=a.querySelector("h3").textContent;for(var i=0;i<VIDEOS.length;i++){if(VIDEOS[i].title===t){openVideo(VIDEOS[i]);return}}});
+g("featured").addEventListener("click",function(e){e.preventDefault();openVideo(VIDEOS[0])});
+window.STA={open:openVideo,has:function(k){return !!(pp&&pp.stamps[k])}};
+renderCard();
+})();
+</script>
+<script>
+/* ===== CATEGORY TABS + SRI LANKA MAP ===== */
+(function(){
+function g(id){return document.getElementById(id)}
+var main=document.getElementById("top"),tabs=document.querySelectorAll("#cats .cat");
+function setCat(c){main.setAttribute("data-cat",c);[].forEach.call(tabs,function(b){b.setAttribute("aria-pressed",b.getAttribute("data-c")===c)});try{localStorage.setItem("sta_cat",c)}catch(e){}}
+g("cats").addEventListener("click",function(e){var b=e.target.closest(".cat");if(b)setCat(b.getAttribute("data-c"))});
+var start="world";try{start=localStorage.getItem("sta_cat")||"world"}catch(e){}
+if(/^#(lanka|lkvideos)$/.test(location.hash))start="lk";
+setCat(start==="lk"?"lk":"world");
+/* outline of Sri Lanka as [lon,lat] (simplified) */
+var OUT=[[80.05,9.80],[80.25,9.83],[80.55,9.55],[80.85,9.22],[81.00,8.92],[81.22,8.55],[81.45,8.05],[81.70,7.70],[81.83,7.40],[81.86,6.85],[81.66,6.55],[81.45,6.30],[81.25,6.18],[81.05,6.10],[80.80,6.03],[80.60,5.93],[80.40,5.98],[80.22,6.03],[80.00,6.40],[79.96,6.58],[79.85,6.93],[79.83,7.20],[79.80,7.55],[79.82,8.00],[79.76,8.25],[79.90,8.60],[79.80,8.95],[79.72,9.10],[79.95,9.30],[80.20,9.50],[79.98,9.65]];
+var LO0=79.65,LO1=81.95,LA0=5.9,LA1=9.85,W=420,H=660,pad=34,cs=Math.cos(7.9*Math.PI/180);
+var k=Math.min((W-2*pad)/((LO1-LO0)*cs),(H-2*pad)/(LA1-LA0)),ox=(W-(LO1-LO0)*cs*k)/2,oy=(H-(LA1-LA0)*k)/2;
+function px(lo,la){return[(lo-LO0)*cs*k+ox,(LA1-la)*k+oy]}
+var island=OUT.map(function(q,i){var p=px(q[0],q[1]);return (i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)}).join("")+"Z";
+var bg='';for(var i=40;i<W;i+=40)bg+='<line x1="'+i+'" y1="0" x2="'+i+'" y2="'+H+'" stroke="rgba(255,255,255,.06)"/>';
+for(var j=40;j<H;j+=40)bg+='<line x1="0" y1="'+j+'" x2="'+W+'" y2="'+j+'" stroke="rgba(255,255,255,.06)"/>';
+bg+='<path d="'+island+'" fill="#2f8a57" stroke="#bfe8cf" stroke-width="2.5" stroke-linejoin="round"/>';
+var tx='font-family="Manrope,sans-serif" font-style="italic" fill="rgba(255,255,255,.5)" font-size="12"';
+bg+='<text x="22" y="640" '+tx+'>Indian Ocean</text><text x="300" y="330" '+tx+'>Bay of Bengal</text><text x="26" y="118" '+tx+'>Gulf of Mannar</text><text x="372" y="38" font-family="Unbounded,sans-serif" font-weight="700" font-size="13" fill="rgba(255,255,255,.7)">N \u2191</text>';
+g("lksvg").innerHTML=bg+'<g id="lkpins"></g>';
+var sel=-1,reg="All";
+var regions=["All"].concat(LK.map(function(p){return p.region}).filter(function(r,i,a){return a.indexOf(r)===i}));
+function drawPins(){
+g("lkpins").innerHTML=LK.map(function(p,i){
+var q=px(p.lon,p.lat),x=q[0],y=q[1],on=STA.has(p.key),show=reg==="All"||p.region===reg,tx2=x+12,ty=y+4,an="start";
+if(p.side==="l"){tx2=x-12;an="end"}else if(p.side==="t"){tx2=x;ty=y-13;an="middle"}
+return '<g class="lkp" data-i="'+i+'" tabindex="0" role="button" aria-label="'+esc(p.n)+(on?", stamped":"")+'" style="cursor:pointer;opacity:'+(show?1:.25)+'"><circle cx="'+x+'" cy="'+y+'" r="18" fill="transparent"/>'
++(i===sel?'<circle cx="'+x+'" cy="'+y+'" r="13" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/>':'')
++'<circle class="pin" cx="'+x+'" cy="'+y+'" r="7" fill="'+(on?"#e8c987":"#ff8160")+'" stroke="#fff" stroke-width="2.5"/>'
++'<text x="'+tx2+'" y="'+ty+'" text-anchor="'+an+'" font-size="12" font-weight="700" fill="#fff" stroke="rgba(0,20,30,.75)" stroke-width="3" paint-order="stroke" font-family="Manrope,sans-serif">'+esc(p.n)+'</text></g>'}).join("");
+}
+function drawDetail(){
+var d=g("lkd");
+if(sel<0){d.innerHTML='<p class="hint">Tap a pin on the map to see the trip.</p>';return}
+var p=LK[sel],on=STA.has(p.key);
+d.innerHTML='<h3><span class="fl">'+p.flag+'</span>'+esc(p.n)+'</h3><p class="cap2">'+esc(p.region)+' · Best time: '+esc(p.best)+' (rough)</p>'
++'<p>'+esc(p.note)+'</p><span class="lkst'+(on?" on":"")+'">'+(on?"\u2713 Stamp collected":"Stamp not collected yet")+'</span><br>'
++'<button class="btn" id="lkgo" type="button" style="border:0;cursor:pointer;font:700 15px Manrope,sans-serif">\u25B6 '+(on?"WATCH AGAIN":"WATCH & GET STAMP")+'</button>'
++'<a class="btn ghost" href="https://www.google.com/maps/search/'+encodeURIComponent(p.n+", Sri Lanka")+'" target="_blank" rel="noopener">Open in Google Maps</a>';
+g("lkgo").addEventListener("click",function(){STA.open(p)});
+}
+function drawList(){
+g("lkchips").innerHTML=regions.map(function(r){return '<button class="chip" aria-pressed="'+(r===reg)+'" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("");
+g("lkgrid").innerHTML=LK.map(function(p,i){return {p:p,i:i}}).filter(function(o){return reg==="All"||o.p.region===reg}).map(function(o){var p=o.p,on=STA.has(p.key);
+return '<a class="pass" href="#" data-i="'+o.i+'"><div class="pic" style="background:linear-gradient(135deg,'+p.a+','+p.b+')"></div><div class="body"><h3>'+esc(p.title)+'</h3><p>'+esc(p.note)+'</p><div class="meta"><span>'+esc(p.n)+' · '+esc(p.region)+'</span><span>'+(on?"\u2713 Stamped":"\u25B6 Watch & get stamp")+'</span></div></div></a>'}).join("");
+}
+function drawProg(){var n=LK.filter(function(p){return STA.has(p.key)}).length;g("lkbar").style.width=(n/LK.length*100)+"%";g("lkcnt").textContent="Sri Lanka stamps: "+n+" of "+LK.length+(n===LK.length?" \u2013 you explored the whole island!":"")}
+function refresh(){drawPins();drawDetail();drawList();drawProg()}
+window.lkRefresh=refresh;
+function pick(i){sel=i;refresh()}
+g("lksvg").addEventListener("click",function(e){var n=e.target.closest(".lkp");if(n)pick(+n.getAttribute("data-i"))});
+g("lksvg").addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var n=e.target.closest(".lkp");if(n){e.preventDefault();pick(+n.getAttribute("data-i"))}});
+g("lkchips").addEventListener("click",function(e){var r=e.target.getAttribute("data-r");if(r){reg=r;refresh()}});
+g("lkgrid").addEventListener("click",function(e){var a=e.target.closest(".pass");if(!a)return;e.preventDefault();var i=+a.getAttribute("data-i");sel=i;refresh();STA.open(LK[i])});
+refresh();
+})();
+</script>
+<script>
+/* ===== OFFROAD GARAGE BUILDER ===== */
+(function(){
+function g(id){return document.getElementById(id)}
+var CARS=[
+{k:"jimny",n:"Suzuki Jimny",t:"compact",tag:"Tight trails",d:"Small, light and narrow, so it squeezes along tight jungle tracks. A real 4x4 with low range."},
+{k:"defender",n:"Land Rover Defender",t:"suv",tag:"Expeditions",d:"The classic expedition icon with great ground clearance and a huge range of upgrades."},
+{k:"lc70",n:"Toyota Land Cruiser 70",t:"suv",tag:"Remote areas",d:"Famous for toughness and easy repairs, a favourite for far-away places."},
+{k:"pajero",n:"Mitsubishi Pajero",t:"suv",tag:"Long journeys",d:"A comfortable 4x4 with proper Dakar rally heritage."},
+{k:"hilux",n:"Toyota Hilux",t:"pickup",tag:"Camping and hauling",d:"A tough pickup with an open bed for camping gear and recovery kit."},
+{k:"wrangler",n:"Jeep Wrangler",t:"suv",tag:"Open-air fun",d:"Solid axles, a go-anywhere shape and a roof that comes off."}];
+var COLS=[{k:"green",n:"Jungle green",c:"#2f6b3a"},{k:"sand",n:"Desert sand",c:"#c9a46a"},{k:"orange",n:"Rescue orange",c:"#e8661f"},{k:"blue",n:"Ocean blue",c:"#1f5f9b"},{k:"black",n:"Matte black",c:"#2a3034"},{k:"white",n:"Pearl white",c:"#eee9de"},{k:"red",n:"Ruby red",c:"#a52a2a"}];
+var MODS=[{k:"lift",n:"Lift kit",d:"More ground clearance"},{k:"tyres",n:"Big all-terrain tyres",d:"Grip on mud and rock"},{k:"rack",n:"Roof rack",d:"Room for your gear"},{k:"tent",n:"Rooftop tent",d:"Sleep on top (rack included)"},{k:"bar",n:"Bull bar and winch",d:"Pull yourself out"},{k:"snork",n:"Snorkel",d:"Air intake for deep water"},{k:"led",n:"LED light bar",d:"Light up the night trail"},{k:"spare",n:"Rear spare wheel",d:"Ready for a puncture"}];
+var TY={compact:{x0:120,x1:400,low:46,roof:92,cb:128,ft:330,fb:356,w1:178,w2:350},suv:{x0:90,x1:430,low:48,roof:100,cb:98,ft:338,fb:372,w1:158,w2:352},pickup:{x0:70,x1:450,low:48,roof:100,cb:232,ft:380,fb:408,w1:140,w2:380}};
+function by(a,k){for(var i=0;i<a.length;i++)if(a[i].k===k)return a[i];return null}
+var DEF={car:"jimny",col:"green",mods:[],name:""},st=load();
+function load(){try{var x=JSON.parse(localStorage.getItem("sta_build")||"null");if(x&&by(CARS,x.car)&&by(COLS,x.col))return{car:x.car,col:x.col,mods:(x.mods||[]).filter(function(m){return by(MODS,m)}),name:String(x.name||"").slice(0,30)}}catch(e){}return{car:DEF.car,col:DEF.col,mods:[],name:""}}
+function save(){try{localStorage.setItem("sta_build",JSON.stringify(st))}catch(e){}}
+function has(k){return st.mods.indexOf(k)>=0}
+function draw(){
+var car=by(CARS,st.car),T=TY[car.t],col=by(COLS,st.col).c,R=has("tyres")?32:24,lift=has("lift")?20:0,G=226,ax=G-R,base=ax-16-lift,roofY=base-T.roof,hoodY=base-T.low;
+var rack=has("rack")||has("tent"),o='<svg viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(car.n)+' in '+esc(by(COLS,st.col).n)+' with '+(st.mods.length||"no")+' mods">';
+o+='<defs><linearGradient id="gsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#173a5a"/><stop offset=".6" stop-color="#e58a5b"/><stop offset="1" stop-color="#ffd27a"/></linearGradient><clipPath id="gclip"><rect x="0" y="0" width="520" height="'+base+'"/></clipPath></defs>';
+o+='<rect width="520" height="'+G+'" fill="url(#gsky)"/><circle cx="410" cy="150" r="34" fill="#fff3c4" opacity=".85"/>';
+o+='<path d="M0 190 L70 140 L130 180 L200 120 L280 185 L350 135 L430 180 L520 150 L520 '+G+' L0 '+G+'Z" fill="#1c3c3a" opacity=".85"/>';
+o+='<rect y="'+G+'" width="520" height="'+(260-G)+'" fill="#3b2a1c"/><rect y="'+G+'" width="520" height="4" fill="#5a4129"/>';
+o+='<ellipse cx="'+((T.x0+T.x1)/2)+'" cy="'+(G+7)+'" rx="'+((T.x1-T.x0)/2+14)+'" ry="8" fill="rgba(0,0,0,.4)"/>';
+/* chassis */
+o+='<rect x="'+(T.x0+10)+'" y="'+(base-4)+'" width="'+(T.x1-T.x0-20)+'" height="'+(ax-base+8)+'" fill="#14191c"/>';
+/* spare (behind body edge) */
+if(has("spare")){var sr=R-3,sx=car.t==="pickup"?T.x0+62:T.x0-12,sy=car.t==="pickup"?hoodY-sr+8:base-30;o+='<circle cx="'+sx+'" cy="'+sy+'" r="'+sr+'" fill="#0e1113"/><circle cx="'+sx+'" cy="'+sy+'" r="'+(sr*.5)+'" fill="#b9c2c6"/>'+(has("tyres")?'<circle cx="'+sx+'" cy="'+sy+'" r="'+(sr-2)+'" fill="none" stroke="#2b3338" stroke-width="3" stroke-dasharray="5 4"/>':'')}
+/* body */
+var bedTop=hoodY+6;
+if(car.t==="pickup"){
+o+='<rect x="'+T.x0+'" y="'+bedTop+'" width="'+(T.cb-T.x0+8)+'" height="'+(base-bedTop)+'" rx="6" fill="'+col+'"/><rect x="'+(T.x0+6)+'" y="'+(bedTop-3)+'" width="'+(T.cb-T.x0-4)+'" height="5" fill="#14191c"/>';
+o+='<rect x="'+T.cb+'" y="'+hoodY+'" width="'+(T.x1-T.cb)+'" height="'+T.low+'" rx="10" fill="'+col+'"/>';
+}else o+='<rect x="'+T.x0+'" y="'+hoodY+'" width="'+(T.x1-T.x0)+'" height="'+T.low+'" rx="10" fill="'+col+'"/>';
+o+='<path d="M'+T.cb+' '+hoodY+' L'+(T.cb+10)+' '+roofY+' L'+T.ft+' '+roofY+' L'+T.fb+' '+hoodY+'Z" fill="'+col+'"/>';
+var wx0=T.cb+16,wx1=T.fb-12,mid=(wx0+wx1)/2;
+o+='<path d="M'+wx0+' '+(hoodY-3)+' L'+(wx0+8)+' '+(roofY+10)+' L'+(T.ft-8)+' '+(roofY+10)+' L'+wx1+' '+(hoodY-3)+'Z" fill="#cfe9f2" opacity=".88"/><line x1="'+mid+'" y1="'+(roofY+10)+'" x2="'+mid+'" y2="'+(hoodY-3)+'" stroke="'+col+'" stroke-width="5"/>';
+o+='<line x1="'+mid+'" y1="'+(hoodY+2)+'" x2="'+mid+'" y2="'+(base-8)+'" stroke="rgba(0,0,0,.3)" stroke-width="2"/>';
+o+='<rect x="'+(car.t==="pickup"?T.x0:T.x0)+'" y="'+(base-10)+'" width="'+(T.x1-T.x0)+'" height="10" rx="4" fill="rgba(0,0,0,.28)"/>';
+o+='<circle cx="'+(T.x1-9)+'" cy="'+(hoodY+14)+'" r="5.5" fill="#ffe9a0" stroke="#7a6a2a"/><rect x="'+T.x0+'" y="'+(hoodY+8)+'" width="5" height="14" rx="2" fill="#c0392b"/>';
+/* arches + wheels */
+[T.w1,T.w2].forEach(function(x){o+='<circle cx="'+x+'" cy="'+ax+'" r="'+(R+7)+'" fill="#11161a" clip-path="url(#gclip)"/>'});
+[T.w1,T.w2].forEach(function(x){o+='<circle cx="'+x+'" cy="'+ax+'" r="'+R+'" fill="#0e1113"/>'+(has("tyres")?'<circle cx="'+x+'" cy="'+ax+'" r="'+(R-3)+'" fill="none" stroke="#2b3338" stroke-width="4" stroke-dasharray="6 4"/>':'')+'<circle cx="'+x+'" cy="'+ax+'" r="'+(R*.52)+'" fill="#b9c2c6"/><circle cx="'+x+'" cy="'+ax+'" r="'+(R*.2)+'" fill="#6c777c"/>'});
+/* mods */
+if(has("snork"))o+='<line x1="'+(T.fb+6)+'" y1="'+hoodY+'" x2="'+(T.ft+6)+'" y2="'+(roofY+6)+'" stroke="#1b1f22" stroke-width="6" stroke-linecap="round"/><circle cx="'+(T.ft+8)+'" cy="'+(roofY+3)+'" r="5" fill="#1b1f22"/>';
+if(has("bar"))o+='<rect x="'+(T.x1-2)+'" y="'+(hoodY+6)+'" width="12" height="'+(T.low-14)+'" rx="3" fill="#1b1f22" stroke="#555"/><rect x="'+(T.x1-2)+'" y="'+(hoodY+18)+'" width="16" height="4" fill="#555"/><rect x="'+(T.x1-2)+'" y="'+(base-22)+'" width="18" height="12" rx="2" fill="#d9a21f" stroke="#7a5a0f"/>';
+var rx0=T.cb+20,rx1=T.ft-14;
+if(rack){o+='<rect x="'+rx0+'" y="'+(roofY-9)+'" width="'+(rx1-rx0)+'" height="9" fill="none" stroke="#15191b" stroke-width="3"/>';for(var x=rx0+14;x<rx1;x+=18)o+='<line x1="'+x+'" y1="'+(roofY-9)+'" x2="'+x+'" y2="'+roofY+'" stroke="#15191b" stroke-width="2"/>';o+='<rect x="'+(rx0-2)+'" y="'+(roofY-2)+'" width="8" height="4" fill="#15191b"/><rect x="'+(rx1-6)+'" y="'+(roofY-2)+'" width="8" height="4" fill="#15191b"/>'}
+if(has("tent"))o+='<rect x="'+(rx0+4)+'" y="'+(roofY-37)+'" width="'+(rx1-rx0-8)+'" height="28" rx="8" fill="#5b6b3a" stroke="#2f3a1c" stroke-width="2"/><path d="M'+(rx0+22)+' '+(roofY-12)+' L'+(rx0+36)+' '+(roofY-30)+' L'+(rx0+50)+' '+(roofY-12)+'Z" fill="#33401f"/>';
+if(has("led"))o+='<polygon points="'+(T.ft+16)+','+(roofY-8)+' '+(T.ft+72)+','+(roofY-26)+' '+(T.ft+72)+','+(roofY+8)+'" fill="rgba(255,235,140,.28)"/><rect x="'+(T.ft-12)+'" y="'+(roofY-8)+'" width="28" height="7" rx="2" fill="#ffe27a" stroke="#1b1f22" stroke-width="2"/>';
+return o+'</svg>'}
+var cars=g("gcars"),cols=g("gcols"),mods=g("gmods");
+cars.innerHTML=CARS.map(function(c){return '<button type="button" class="gcar" data-k="'+c.k+'" aria-pressed="false">'+esc(c.n)+'<small>'+esc(c.tag)+'</small></button>'}).join("");
+cols.innerHTML=COLS.map(function(c){return '<button type="button" class="gcol" data-k="'+c.k+'" style="background:'+c.c+'" aria-label="'+esc(c.n)+'" title="'+esc(c.n)+'" aria-pressed="false"></button>'}).join("");
+mods.innerHTML=MODS.map(function(m){return '<label class="gmod"><input type="checkbox" data-k="'+m.k+'"><span><b>'+esc(m.n)+'</b><small>'+esc(m.d)+'</small></span></label>'}).join("");
+function list(){var a=st.mods.slice();if(has("tent")&&!has("rack")){var i=a.indexOf("tent");a.splice(i,0,"rack")}return MODS.filter(function(m){return a.indexOf(m.k)>=0}).map(function(m){return m.n})}
+function text(){var car=by(CARS,st.car),l=list();return "My offroad rig"+(st.name?' "'+st.name+'"':"")+": "+car.n+", "+by(COLS,st.col).n+". Mods: "+(l.length?l.join(", "):"none yet")+". Build yours: "+location.origin+location.pathname+"#garage"}
+function sync(){
+var car=by(CARS,st.car),l=list();
+g("gview").innerHTML=draw();
+[].forEach.call(cars.children,function(b){b.setAttribute("aria-pressed",b.getAttribute("data-k")===st.car)});
+[].forEach.call(cols.children,function(b){b.setAttribute("aria-pressed",b.getAttribute("data-k")===st.col)});
+[].forEach.call(mods.querySelectorAll("input"),function(i){i.checked=has(i.getAttribute("data-k"))});
+g("gabout").textContent=car.d;
+g("gsum").innerHTML='<h4>'+esc(st.name||car.n)+'</h4><p>'+esc(car.n)+' · '+esc(by(COLS,st.col).n)+' · '+l.length+' mod'+(l.length===1?"":"s")+'</p><div class="gpills">'+(l.length?l.map(function(m){return '<span>'+esc(m)+'</span>'}).join(""):'<span style="background:var(--line);color:var(--ink)">Stock, no mods yet</span>')+'</div>';
+g("gwa").href="https://wa.me/?text="+encodeURIComponent(text());
+if(g("gname").value!==st.name)g("gname").value=st.name;
+}
+cars.addEventListener("click",function(e){var b=e.target.closest(".gcar");if(!b)return;st.car=b.getAttribute("data-k");save();sync()});
+cols.addEventListener("click",function(e){var b=e.target.closest(".gcol");if(!b)return;st.col=b.getAttribute("data-k");save();sync()});
+mods.addEventListener("change",function(e){var i=e.target.closest("input");if(!i)return;var k=i.getAttribute("data-k"),p=st.mods.indexOf(k);if(i.checked&&p<0)st.mods.push(k);if(!i.checked&&p>=0)st.mods.splice(p,1);save();sync()});
+g("gname").addEventListener("input",function(){st.name=g("gname").value.slice(0,30);save();sync()});
+g("greset").addEventListener("click",function(){st={car:DEF.car,col:DEF.col,mods:[],name:""};save();sync()});
+g("gcopy").addEventListener("click",function(){
+var t=text(),b=g("gcopy");
+function done(){b.textContent="Copied \u2713";setTimeout(function(){b.textContent="Copy my build"},1800)}
+function fb(){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy");done()}catch(e){}document.body.removeChild(a)}
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();
+});
+sync();
+window.GARAGE={draw:draw,state:function(){return st},set:function(s){st=s;sync()}};
+})();
+</script>
+</body>
+</html>
